@@ -1,0 +1,1007 @@
+openapi: 3.1.0
+info:
+  title: Compute & Energy Orchestration API (CEOA)
+  version: 1.0.0
+  description: |
+    Aetherion's infrastructure layer for orchestrating computation across ANY infrastructure -
+    cloud, data centers, edge devices, and billions of consumer devices - while optimizing for
+    energy efficiency, carbon intensity, and cost.
+    
+    **Core Capabilities:**
+    - AI-powered workload analysis and placement
+    - Multi-cloud orchestration (AWS, GCP, Azure)
+    - Carbon-aware scheduling
+    - Device mesh networking
+    - Constitutional governance integration
+  contact:
+    name: Aetherion Engineering
+    email: engineering@aetherion.ai
+  license:
+    name: Proprietary
+
+servers:
+  - url: https://api.aetherion.ai/ceoa/v1
+    description: Production
+  - url: https://staging-api.aetherion.ai/ceoa/v1
+    description: Staging
+  - url: http://localhost:8000/ceoa/v1
+    description: Local development
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: workloads
+    description: Workload submission and management
+  - name: placement
+    description: Placement optimization and recommendations
+  - name: devices
+    description: Device mesh registration and management
+  - name: infrastructure
+    description: Infrastructure discovery and monitoring
+  - name: energy
+    description: Carbon intelligence and energy optimization
+  - name: governance
+    description: Constitutional governance and compliance
+
+paths:
+  # ============================================================================
+  # WORKLOAD ENDPOINTS
+  # ============================================================================
+  /workloads:
+    post:
+      tags: [workloads]
+      summary: Submit workload for execution
+      operationId: submitWorkload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkloadSubmission'
+      responses:
+        '201':
+          description: Workload submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkloadResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    
+    get:
+      tags: [workloads]
+      summary: List workloads
+      operationId: listWorkloads
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [pending, running, completed, failed, cancelled]
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Workloads retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workloads:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkloadResponse'
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+
+  /workloads/{workload_id}:
+    get:
+      tags: [workloads]
+      summary: Get workload status
+      operationId: getWorkload
+      parameters:
+        - name: workload_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Workload details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkloadResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    
+    delete:
+      tags: [workloads]
+      summary: Cancel workload
+      operationId: cancelWorkload
+      parameters:
+        - name: workload_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Workload cancelled
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ============================================================================
+  # PLACEMENT OPTIMIZATION
+  # ============================================================================
+  /placement/optimize:
+    post:
+      tags: [placement]
+      summary: Get optimal placement recommendation
+      operationId: optimizePlacement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlacementRequest'
+      responses:
+        '200':
+          description: Placement recommendation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlacementRecommendation'
+
+  # ============================================================================
+  # DEVICE MESH ENDPOINTS
+  # ============================================================================
+  /devices:
+    post:
+      tags: [devices]
+      summary: Register device for mesh participation
+      operationId: registerDevice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceRegistration'
+      responses:
+        '201':
+          description: Device registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceResponse'
+    
+    get:
+      tags: [devices]
+      summary: List registered devices
+      operationId: listDevices
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, idle, offline]
+      responses:
+        '200':
+          description: Devices list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  devices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeviceResponse'
+
+  /devices/{device_id}:
+    get:
+      tags: [devices]
+      summary: Get device status and earnings
+      operationId: getDevice
+      parameters:
+        - name: device_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Device details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceResponse'
+    
+    put:
+      tags: [devices]
+      summary: Update device preferences
+      operationId: updateDevicePreferences
+      parameters:
+        - name: device_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParticipationPreferences'
+      responses:
+        '200':
+          description: Preferences updated
+    
+    delete:
+      tags: [devices]
+      summary: Unregister device
+      operationId: unregisterDevice
+      parameters:
+        - name: device_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Device unregistered
+
+  # ============================================================================
+  # INFRASTRUCTURE ENDPOINTS
+  # ============================================================================
+  /infrastructure/nodes:
+    get:
+      tags: [infrastructure]
+      summary: List available infrastructure nodes
+      operationId: listInfrastructureNodes
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [cloud, datacenter, device_mesh, edge]
+        - name: region
+          in: query
+          schema:
+            type: string
+        - name: available
+          in: query
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Infrastructure nodes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nodes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InfrastructureNode'
+
+  /infrastructure/nodes/{node_id}:
+    get:
+      tags: [infrastructure]
+      summary: Get node details
+      operationId: getInfrastructureNode
+      parameters:
+        - name: node_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Node details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfrastructureNode'
+
+  /infrastructure/nodes/{node_id}/metrics:
+    get:
+      tags: [infrastructure]
+      summary: Get real-time node metrics
+      operationId: getNodeMetrics
+      parameters:
+        - name: node_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Node metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodeMetrics'
+
+  # ============================================================================
+  # ENERGY & CARBON ENDPOINTS
+  # ============================================================================
+  /energy/carbon-intensity:
+    get:
+      tags: [energy]
+      summary: Get current carbon intensity for regions
+      operationId: getCarbonIntensity
+      parameters:
+        - name: regions
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: Carbon intensity data
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: number
+                  description: gCO2/kWh
+
+  /energy/carbon-forecast:
+    get:
+      tags: [energy]
+      summary: Get carbon intensity forecast
+      operationId: getCarbonForecast
+      parameters:
+        - name: region
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: hours
+          in: query
+          schema:
+            type: integer
+            default: 24
+            maximum: 168
+      responses:
+        '200':
+          description: Carbon forecast
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarbonForecast'
+
+  /energy/footprint:
+    get:
+      tags: [energy]
+      summary: Get carbon footprint for tenant
+      operationId: getCarbonFootprint
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Carbon footprint report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarbonFootprint'
+
+  # ============================================================================
+  # GOVERNANCE ENDPOINTS
+  # ============================================================================
+  /governance/evaluate:
+    post:
+      tags: [governance]
+      summary: Evaluate workload against governance policies
+      operationId: evaluateGovernance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                workload_id:
+                  type: string
+                  format: uuid
+                placement:
+                  $ref: '#/components/schemas/PlacementTarget'
+      responses:
+        '200':
+          description: Governance evaluation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GovernanceEvaluation'
+
+# ============================================================================
+# COMPONENTS
+# ============================================================================
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # -------------------------------------------------------------------------
+    # Workload Schemas
+    # -------------------------------------------------------------------------
+    WorkloadSubmission:
+      type: object
+      required:
+        - description
+        - requirements
+      properties:
+        code:
+          type: string
+          description: Base64-encoded code/script
+        docker_image:
+          type: string
+          description: Docker image URI (alternative to code)
+        description:
+          type: string
+          description: Human-readable workload description (for AI analysis)
+        requirements:
+          $ref: '#/components/schemas/ResourceRequirements'
+        data_sources:
+          type: array
+          items:
+            type: string
+          description: URIs of data sources (S3, GCS, etc)
+        preferences:
+          $ref: '#/components/schemas/SchedulingPreferences'
+        metadata:
+          type: object
+          additionalProperties: true
+
+    ResourceRequirements:
+      type: object
+      properties:
+        cpu_cores:
+          type: number
+          minimum: 0.1
+        memory_gb:
+          type: number
+          minimum: 0.1
+        gpu_required:
+          type: boolean
+          default: false
+        gpu_type:
+          type: string
+          enum: [nvidia_t4, nvidia_a100, nvidia_h100, amd_mi250]
+        storage_gb:
+          type: number
+        network_bandwidth_mbps:
+          type: number
+        estimated_duration_minutes:
+          type: number
+
+    SchedulingPreferences:
+      type: object
+      properties:
+        carbon_aware:
+          type: boolean
+          default: true
+        carbon_weight:
+          type: number
+          minimum: 0
+          maximum: 1
+          default: 0.5
+          description: 0 = cost only, 1 = carbon only
+        cost_optimize:
+          type: boolean
+          default: true
+        max_delay_hours:
+          type: number
+          default: 0
+          description: Max hours to defer for better placement
+        preferred_regions:
+          type: array
+          items:
+            type: string
+        excluded_regions:
+          type: array
+          items:
+            type: string
+        sovereignty_requirements:
+          type: array
+          items:
+            type: string
+          description: ISO 3166-1 alpha-2 country codes
+
+    WorkloadResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [pending, queued, running, completed, failed, cancelled]
+        submission:
+          $ref: '#/components/schemas/WorkloadSubmission'
+        placement:
+          $ref: '#/components/schemas/PlacementTarget'
+        estimates:
+          $ref: '#/components/schemas/WorkloadEstimates'
+        actual:
+          $ref: '#/components/schemas/WorkloadActuals'
+        governance:
+          $ref: '#/components/schemas/GovernanceEvaluation'
+        created_at:
+          type: string
+          format: date-time
+        started_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+
+    WorkloadEstimates:
+      type: object
+      properties:
+        cost_usd:
+          type: number
+        carbon_kg:
+          type: number
+        duration_seconds:
+          type: number
+        baseline_cost_usd:
+          type: number
+          description: Cost without CEOA optimization
+        savings_usd:
+          type: number
+        savings_percent:
+          type: number
+
+    WorkloadActuals:
+      type: object
+      properties:
+        cost_usd:
+          type: number
+        carbon_kg:
+          type: number
+        duration_seconds:
+          type: number
+        energy_kwh:
+          type: number
+        savings_usd:
+          type: number
+        savings_percent:
+          type: number
+
+    # -------------------------------------------------------------------------
+    # Placement Schemas
+    # -------------------------------------------------------------------------
+    PlacementRequest:
+      type: object
+      required:
+        - requirements
+      properties:
+        requirements:
+          $ref: '#/components/schemas/ResourceRequirements'
+        preferences:
+          $ref: '#/components/schemas/SchedulingPreferences'
+        data_sources:
+          type: array
+          items:
+            type: string
+
+    PlacementRecommendation:
+      type: object
+      properties:
+        primary:
+          $ref: '#/components/schemas/PlacementTarget'
+        alternatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlacementTarget'
+        reasoning:
+          type: string
+          description: AI-generated explanation of placement decision
+
+    PlacementTarget:
+      type: object
+      properties:
+        provider:
+          type: string
+          enum: [aws, gcp, azure, device_mesh, on_premise]
+        region:
+          type: string
+        zone:
+          type: string
+        node_id:
+          type: string
+        instance_type:
+          type: string
+        spot_instance:
+          type: boolean
+        estimated_cost:
+          type: number
+        estimated_carbon:
+          type: number
+        carbon_intensity:
+          type: number
+          description: gCO2/kWh
+        data_transfer_cost:
+          type: number
+        placement_score:
+          type: number
+          description: Overall placement quality (0-1)
+
+    # -------------------------------------------------------------------------
+    # Device Mesh Schemas
+    # -------------------------------------------------------------------------
+    DeviceRegistration:
+      type: object
+      required:
+        - device_info
+        - preferences
+      properties:
+        device_info:
+          $ref: '#/components/schemas/DeviceInfo'
+        preferences:
+          $ref: '#/components/schemas/ParticipationPreferences'
+
+    DeviceInfo:
+      type: object
+      properties:
+        model:
+          type: string
+        platform:
+          type: string
+          enum: [ios, android, macos, windows, linux]
+        cpu_cores:
+          type: integer
+        memory_gb:
+          type: number
+        storage_available_gb:
+          type: number
+        network_type:
+          type: string
+          enum: [wifi, cellular_5g, cellular_4g, ethernet]
+
+    ParticipationPreferences:
+      type: object
+      properties:
+        only_when_charging:
+          type: boolean
+          default: true
+        only_on_wifi:
+          type: boolean
+          default: true
+        max_cpu_percent:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        max_battery_drain_percent:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 5
+        allowed_hours:
+          type: array
+          items:
+            type: integer
+            minimum: 0
+            maximum: 23
+          description: Hours of day (0-23) when device can participate
+
+    DeviceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        device_info:
+          $ref: '#/components/schemas/DeviceInfo'
+        preferences:
+          $ref: '#/components/schemas/ParticipationPreferences'
+        status:
+          type: string
+          enum: [active, idle, offline]
+        earnings:
+          $ref: '#/components/schemas/DeviceEarnings'
+        statistics:
+          $ref: '#/components/schemas/DeviceStatistics'
+        registered_at:
+          type: string
+          format: date-time
+        last_active_at:
+          type: string
+          format: date-time
+
+    DeviceEarnings:
+      type: object
+      properties:
+        total_usd:
+          type: number
+        pending_usd:
+          type: number
+        paid_usd:
+          type: number
+
+    DeviceStatistics:
+      type: object
+      properties:
+        workloads_completed:
+          type: integer
+        compute_hours_contributed:
+          type: number
+        uptime_percent:
+          type: number
+
+    # -------------------------------------------------------------------------
+    # Infrastructure Schemas
+    # -------------------------------------------------------------------------
+    InfrastructureNode:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [cloud, datacenter, device_mesh, edge]
+        provider:
+          type: string
+        region:
+          type: string
+        zone:
+          type: string
+        capabilities:
+          $ref: '#/components/schemas/NodeCapabilities'
+        availability:
+          $ref: '#/components/schemas/NodeAvailability'
+        pricing:
+          $ref: '#/components/schemas/NodePricing'
+
+    NodeCapabilities:
+      type: object
+      properties:
+        cpu_cores:
+          type: integer
+        memory_gb:
+          type: number
+        gpu_available:
+          type: boolean
+        gpu_type:
+          type: string
+        storage_gb:
+          type: number
+        network_bandwidth_gbps:
+          type: number
+
+    NodeAvailability:
+      type: object
+      properties:
+        available:
+          type: boolean
+        available_cpu_cores:
+          type: integer
+        available_memory_gb:
+          type: number
+        queue_length:
+          type: integer
+
+    NodePricing:
+      type: object
+      properties:
+        compute_per_hour:
+          type: number
+        memory_per_gb_hour:
+          type: number
+        storage_per_gb_month:
+          type: number
+        spot_available:
+          type: boolean
+        spot_discount_percent:
+          type: number
+
+    NodeMetrics:
+      type: object
+      properties:
+        cpu_utilization:
+          type: number
+        memory_utilization:
+          type: number
+        network_throughput_mbps:
+          type: number
+        power_draw_watts:
+          type: number
+        carbon_intensity:
+          type: number
+        temperature_celsius:
+          type: number
+
+    # -------------------------------------------------------------------------
+    # Energy Schemas
+    # -------------------------------------------------------------------------
+    CarbonForecast:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        carbon_intensity:
+          type: number
+          description: gCO2/kWh
+        forecast_confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        is_green_window:
+          type: boolean
+          description: True if intensity below threshold
+
+    CarbonFootprint:
+      type: object
+      properties:
+        period:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+            end_date:
+              type: string
+              format: date
+        total_carbon_kg:
+          type: number
+        total_energy_kwh:
+          type: number
+        total_cost_usd:
+          type: number
+        baseline_carbon_kg:
+          type: number
+          description: Carbon without CEOA optimization
+        carbon_saved_kg:
+          type: number
+        carbon_reduction_percent:
+          type: number
+        by_region:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              carbon_kg:
+                type: number
+              energy_kwh:
+                type: number
+        by_provider:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              carbon_kg:
+                type: number
+              cost_usd:
+                type: number
+
+    # -------------------------------------------------------------------------
+    # Governance Schemas
+    # -------------------------------------------------------------------------
+    GovernanceEvaluation:
+      type: object
+      properties:
+        authorized:
+          type: boolean
+        tier:
+          type: string
+          enum: [routine, elevated, restricted, prohibited]
+        benefit_score:
+          type: number
+          minimum: 0
+          maximum: 1
+        harm_score:
+          type: number
+          minimum: 0
+          maximum: 1
+        sovereignty_compliant:
+          type: boolean
+        violations:
+          type: array
+          items:
+            type: object
+            properties:
+              policy:
+                type: string
+              severity:
+                type: string
+                enum: [info, warning, error, critical]
+              message:
+                type: string
+        audit_trail:
+          type: string
+          description: Immutable audit log reference
+
+    # -------------------------------------------------------------------------
+    # Error Schemas
+    # -------------------------------------------------------------------------
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

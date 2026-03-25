@@ -1,0 +1,51 @@
+New UIE Service Structure (Absorbing Cortex Gateway)
+========================================================
+
+universal-intelligence-engine/
+├── uie/
+│   ├── __init__.py
+│   ├── main.py                          # FastAPI app (single public endpoint)
+│   │
+│   ├── api/                             # API Layer (from Gateway)
+│   │   ├── __init__.py
+│   │   ├── routes.py                    # Public routes
+│   │   ├── auth.py                      # API key authentication
+│   │   ├── rate_limiting.py             # Rate limiting
+│   │   ├── models.py                    # Request/response models
+│   │   └── health.py                    # Health checks
+│   │
+│   ├── orchestration/                   # Core orchestration (from Gateway)
+│   │   ├── __init__.py
+│   │   ├── orchestrator.py              # Main orchestration logic
+│   │   ├── planner.py                   # Intent planning
+│   │   ├── executor.py                  # Capability execution
+│   │   └── synthesizer.py               # Result synthesis
+│   │
+│   ├── intelligence/                    # UIE-specific intelligence
+│   │   ├── __init__.py
+│   │   ├── intent_parser.py             # Natural language → Intent
+│   │   ├── conversation.py              # Session management
+│   │   ├── context_builder.py           # Governance context building
+│   │   └── llm_client.py                # Internal LLM calls
+│   │
+│   ├── clients/                         # Internal service clients
+│   │   ├── __init__.py
+│   │   ├── function_broker_client.py    # mTLS client to Function Broker
+│   │   └── mtls.py                      # mTLS utilities
+│   │
+│   ├── security/                        # Security layer (from Gateway)
+│   │   ├── __init__.py
+│   │   ├── governance.py                # Governance checking
+│   │   └── input_validation.py          # Input sanitization
+│   │
+│   └── config.py                        # Configuration
+│
+├── tests/
+│   ├── test_orchestration.py
+│   ├── test_intent_parsing.py
+│   └── test_security.py
+│
+├── Dockerfile
+├── pyproject.toml
+├── requirements.txt
+└── README.md

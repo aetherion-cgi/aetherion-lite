@@ -1,0 +1,92 @@
+# CyberSecurity Industry Manifest
+industry: "CyberSecurity"
+category: "SW:CYBERSECURITY"
+
+analysis_strategy:
+  default: "comprehensive"
+  requires_external_data: true
+  requires_strategic_context: true
+  child_agents_needed:
+    - market_sizing
+    - technology_assessment
+    - competitive_positioning
+    - customer_analysis
+
+metrics:
+  critical:
+    - threat_detection_rate
+    - false_positive_rate
+    - mean_time_to_detect
+    - mean_time_to_respond
+    - breach_prevention_rate
+  industry_specific:
+    - siem_integration
+    - soc_analyst_efficiency
+    - vulnerability_coverage
+    - compliance_certifications
+
+risk_factors:
+  high_priority:
+    - zero_day_exploit
+    - ai_adversarial_attacks
+    - insider_threat
+    - supply_chain_attack
+  medium_priority:
+    - skill_gap
+    - alert_fatigue
+    - tool_sprawl
+  low_priority:
+    - vendor_consolidation
+
+competitive_positioning:
+  key_factors:
+    - detection_accuracy
+    - response_automation
+    - integration_breadth
+    - threat_intelligence
+    - analyst_productivity
+  moat_indicators:
+    threat_intelligence:
+      threshold: "proprietary"
+      moat_contribution: 0.35
+    ai_detection:
+      threshold: "state_of_art"
+      moat_contribution: 0.30
+
+technology_assessment:
+  technical_factors:
+    - ai_ml_capabilities
+    - real_time_detection
+    - automated_response
+    - threat_hunting
+    - forensics_tools
+
+governance:
+  authorization_tier: tier_2
+  benefit_threshold: 75
+  harm_threshold: 25
+  special_considerations:
+    - national_security
+    - critical_infrastructure
+    - false_positives_harm
+    - surveillance_ethics
+
+valuation:
+  revenue_multiples:
+    top_tier: 15-30
+    strong: 10-15
+    average: 5-10
+
+notes: |
+  CyberSecurity companies evaluated on:
+  1. Detection accuracy (low false positives)
+  2. Response speed (MTTR < 1 hour)
+  3. Integration ecosystem (SIEM, SOAR)
+  4. Threat intelligence (proprietary feeds)
+  5. Compliance support (SOC 2, ISO 27001)
+  
+  Market dynamics:
+  - Consolidation trend (platform plays)
+  - AI/ML = table stakes by 2025
+  - XDR (Extended Detection & Response)
+  - Zero Trust architecture demand

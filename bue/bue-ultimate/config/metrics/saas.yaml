@@ -1,0 +1,36 @@
+# SaaS Metric Definitions
+asset_type: saas
+version: "2.0.0"
+
+required_fields:
+  - arr
+  - customers
+
+metrics:
+  arr:
+    description: "Annual Recurring Revenue"
+    formula: "data.arr"
+    unit: "currency"
+    
+  arr_growth_pct:
+    description: "ARR Growth Rate"
+    formula: "((arr - prior_arr) / prior_arr) * 100"
+    unit: "percent"
+    thresholds:
+      excellent: 100
+      good: 50
+      acceptable: 20
+      
+  ltv_cac_ratio:
+    description: "LTV to CAC Ratio"
+    formula: "ltv / cac"
+    unit: "ratio"
+    thresholds:
+      excellent: 5
+      good: 3
+      acceptable: 2
+
+defaults:
+  churn_rate: 0.05
+  gross_margin: 0.80
+  volatility: 0.15

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aetherion-ile"
+version = "1.0.0"
+description = "Aetherion Internal Learning Engine (ILE)"
+authors = [
+    { name = "Aetherion Team" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.0.0",
+    "httpx>=0.25.0",
+    "pyyaml>=6.0.0",
+    "redis>=5.0.0",
+    "aetherion-common>=1.0.0",
+]
+
+[project.optional-dependencies]
+all = [
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.12.0",
+    "pandas>=2.1.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ile_system*"]

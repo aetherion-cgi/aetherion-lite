@@ -1,0 +1,71 @@
+# HealthTech Industry Manifest
+industry: "HealthTech"
+category: "SW:HEALTHTECH"
+
+analysis_strategy:
+  default: "comprehensive"
+  requires_external_data: true
+  requires_strategic_context: true
+  child_agents_needed:
+    - market_sizing
+    - regulatory_risk
+    - technology_assessment
+    - financial_forecasting
+
+metrics:
+  critical:
+    - clinical_validation
+    - regulatory_clearance
+    - hipaa_compliance
+    - patient_outcomes
+    - provider_adoption
+    - reimbursement_rates
+  industry_specific:
+    - fda_approval_status
+    - clinical_trial_results
+    - ehr_integration_depth
+    - patient_engagement_rate
+    - readmission_reduction
+
+risk_factors:
+  high_priority:
+    - fda_rejection
+    - hipaa_violation
+    - clinical_trial_failure
+    - reimbursement_denial
+    - malpractice_liability
+  medium_priority:
+    - provider_resistance
+    - integration_complexity
+    - data_interoperability
+  low_priority:
+    - technology_obsolescence
+
+regulatory_risk:
+  fda_pathways:
+    - 510k_clearance
+    - de_novo_classification
+    - pma_approval
+  hipaa_requirements:
+    - phi_encryption
+    - baa_compliance
+    - breach_notification
+  compliance_cost: "$1M-10M/year"
+
+governance:
+  authorization_tier: tier_3
+  benefit_threshold: 80
+  harm_threshold: 20
+  special_considerations:
+    - patient_safety
+    - clinical_efficacy
+    - health_equity
+    - data_privacy
+
+notes: |
+  HealthTech requires:
+  - FDA clearance (months to years)
+  - HIPAA compliance (mandatory)
+  - Clinical validation (evidence-based)
+  - Provider buy-in (slow adoption)
+  - Reimbursement codes (CPT, ICD-10)

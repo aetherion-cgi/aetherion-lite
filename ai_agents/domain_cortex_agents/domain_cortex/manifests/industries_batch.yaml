@@ -1,0 +1,167 @@
+# Food, Agriculture & Water
+---
+domain_name: "Food, Agriculture & Water"
+domain_type: "industry"
+description: "Crop modeling, water systems, food logistics, agricultural optimization, supply chain management"
+ontology:
+  key_concepts: ["Crop Yield", "Water Management", "Food Safety", "Supply Chain", "Climate Impact"]
+kpis: [{name: "Crop Yield", target: 95}, {name: "Water Efficiency", target: 85}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Energy & Fuels", "Transportation & Logistics", "Clean Energy Tech"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# Energy & Fuels
+domain_name: "Energy & Fuels"
+domain_type: "industry"
+description: "Power grids, renewables, oil/gas, carbon economics, energy storage, grid optimization"
+ontology:
+  key_concepts: ["Grid Stability", "Renewable Integration", "Carbon Emissions", "Energy Storage", "Peak Demand"]
+kpis: [{name: "Grid Uptime", target: 99.9}, {name: "Renewable Percentage", target: 50}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Clean Energy Tech", "Advanced Computing & Chips", "IoT"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Housing, Construction, Materials
+domain_name: "Housing, Construction, Materials"
+domain_type: "industry"
+description: "Real estate, supply chains, infrastructure, building optimization, materials science"
+ontology:
+  key_concepts: ["Construction Timeline", "Material Costs", "Building Codes", "Infrastructure Resilience"]
+kpis: [{name: "Project On-Time", target: 80}, {name: "Cost Variance", target: 5}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Manufacturing & Industrial", "Robotics & Automation"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# Transportation & Logistics
+domain_name: "Transportation & Logistics"
+domain_type: "industry"
+description: "Road, air, sea transport, fleets, last-mile delivery, supply chain optimization"
+ontology:
+  key_concepts: ["Route Optimization", "Fleet Management", "Last-Mile Delivery", "Supply Chain"]
+kpis: [{name: "On-Time Delivery", target: 95}, {name: "Fleet Utilization", target: 85}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Robotics & Automation", "IoT", "Networks & Edge"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# Telecommunications & Internet
+domain_name: "Telecommunications & Internet"
+domain_type: "industry"
+description: "5G, fiber, satellite networks, connectivity infrastructure, network optimization"
+ontology:
+  key_concepts: ["Network Capacity", "Latency", "Coverage", "Bandwidth", "5G Deployment"]
+kpis: [{name: "Network Uptime", target: 99.99}, {name: "Average Latency", target: 20}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Networks & Edge", "Cloud Computing", "IoT"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Financial Services
+domain_name: "Financial Services"
+domain_type: "industry"
+description: "Banking, payments, insurance, capital markets, risk analytics, fraud detection"
+ontology:
+  key_concepts: ["Credit Risk", "Market Risk", "Fraud Detection", "Regulatory Compliance", "Payment Processing"]
+kpis: [{name: "Fraud Detection Rate", target: 99}, {name: "Transaction Success", target: 99.9}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: false, use_uie: true, use_ile: true}
+related_domains: ["Blockchain & Digital Assets", "Cybersecurity", "Payments & Digital Identity"]
+governance: {sensitivity_level: "critical", authorization_tier: "tier_3"}
+
+---
+# Retail & Consumer Goods
+domain_name: "Retail & Consumer Goods"
+domain_type: "industry"
+description: "E-commerce, inventory, demand forecasting, consumer analytics, supply chain"
+ontology:
+  key_concepts: ["Inventory Management", "Demand Forecasting", "Customer Analytics", "Supply Chain"]
+kpis: [{name: "Inventory Turnover", target: 8}, {name: "Forecast Accuracy", target: 85}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: false, use_uie: true, use_ile: true}
+related_domains: ["Digital Platforms & Information Services", "Transportation & Logistics"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# Education & Workforce
+domain_name: "Education & Workforce"
+domain_type: "industry"
+description: "Schools, edtech, workforce modeling, skills development, education analytics"
+ontology:
+  key_concepts: ["Learning Outcomes", "Skill Gaps", "Workforce Planning", "Education Technology"]
+kpis: [{name: "Student Outcomes", target: 85}, {name: "Skills Match Rate", target: 75}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: false, use_uie: true, use_ile: true}
+related_domains: ["AI/ML Systems", "Data Platforms"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Public Sector, Defense & Security
+domain_name: "Public Sector, Defense & Security"
+domain_type: "industry"
+description: "Governments, defense operations, policing, civil infrastructure, strategic planning"
+ontology:
+  key_concepts: ["National Security", "Defense Readiness", "Civil Infrastructure", "Public Safety"]
+kpis: [{name: "Response Time", target: 95}, {name: "Threat Detection", target: 99}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Cybersecurity", "AI/ML Systems", "Advanced Computing & Chips"]
+governance: {sensitivity_level: "critical", authorization_tier: "tier_3"}
+
+---
+# Media & Entertainment
+domain_name: "Media & Entertainment"
+domain_type: "industry"
+description: "Content ecosystems, advertising, reputation modeling, content distribution"
+ontology:
+  key_concepts: ["Content Engagement", "Audience Analytics", "Ad Performance", "Content Rights"]
+kpis: [{name: "Engagement Rate", target: 70}, {name: "Ad ROI", target: 3.0}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: false, use_uie: true, use_ile: true}
+related_domains: ["Digital Platforms & Information Services", "AI/ML Systems"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# Manufacturing & Industrial
+domain_name: "Manufacturing & Industrial"
+domain_type: "industry"
+description: "Discrete manufacturing, industrial processes, robotics, quality control, supply chain"
+ontology:
+  key_concepts: ["Production Efficiency", "Quality Control", "Supply Chain", "Equipment Maintenance"]
+kpis: [{name: "OEE", target: 85}, {name: "Defect Rate", target: 0.1}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Robotics & Automation", "IoT", "Advanced Computing & Chips"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# Waste & Environment
+domain_name: "Waste & Environment"
+domain_type: "industry"
+description: "Waste streams, emissions, circular economy, environmental monitoring"
+ontology:
+  key_concepts: ["Waste Reduction", "Recycling Rates", "Carbon Footprint", "Circular Economy"]
+kpis: [{name: "Recycling Rate", target: 75}, {name: "Carbon Reduction", target: 30}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Energy & Fuels", "Clean Energy Tech", "Manufacturing & Industrial"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# Travel, Tourism & Hospitality
+domain_name: "Travel, Tourism & Hospitality"
+domain_type: "industry"
+description: "Airlines, hotels, experience design, tourism analytics, hospitality operations"
+ontology:
+  key_concepts: ["Occupancy Rates", "Customer Experience", "Revenue Management", "Travel Patterns"]
+kpis: [{name: "Occupancy Rate", target: 80}, {name: "Customer Satisfaction", target: 90}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: false, use_uie: true, use_ile: true}
+related_domains: ["Transportation & Logistics", "Digital Platforms & Information Services"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# Digital Platforms & Information Services
+domain_name: "Digital Platforms & Information Services"
+domain_type: "industry"
+description: "Search, app ecosystems, content networks, platform economics"
+ontology:
+  key_concepts: ["Platform Effects", "Network Effects", "User Engagement", "Content Moderation"]
+kpis: [{name: "Daily Active Users", target: 1000000}, {name: "Platform Uptime", target: 99.99}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Cloud Computing", "AI/ML Systems", "Data Platforms"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}

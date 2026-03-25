@@ -1,0 +1,219 @@
+# FinTech Industry Manifest
+# Configuration for BUE Agent analyzing FinTech companies
+
+industry: "FinTech"
+category: "SW:FINTECH"
+
+analysis_strategy:
+  default: "comprehensive"
+  requires_external_data: true
+  requires_strategic_context: true  # Regulatory landscape critical
+  
+  child_agents_needed:
+    - market_sizing
+    - regulatory_risk        # CRITICAL for fintech
+    - competitive_positioning
+    - financial_forecasting
+
+metrics:
+  critical:
+    - transaction_volume      # Total transactions processed
+    - take_rate              # % of transaction value
+    - payment_success_rate   # % successful transactions
+    - fraud_rate             # % fraudulent transactions
+    - regulatory_compliance  # SOC 2, PCI-DSS, etc.
+    - customer_acquisition   # CAC for financial services
+  
+  industry_specific:
+    - aum                    # Assets Under Management
+    - loan_default_rate      # Credit risk
+    - interchange_revenue    # Card network fees
+    - float_income           # Interest on deposits
+    - cross_sell_rate        # Multiple products per customer
+
+risk_factors:
+  high_priority:
+    - regulatory_changes     # Banking regulations evolving
+    - fraud_losses           # Payment fraud, identity theft
+    - cybersecurity_breach   # Data breaches catastrophic
+    - capital_requirements   # Banking license requirements
+    - partner_bank_risk      # Reliance on sponsor banks
+    - compliance_violations  # Fines can be massive
+  
+  medium_priority:
+    - interest_rate_risk     # Affects lending margins
+    - liquidity_crisis       # Bank run scenarios
+    - credit_risk            # Loan defaults
+    - competitive_pressure   # Big banks entering fintech
+    - technology_disruption  # Crypto, blockchain, etc.
+  
+  low_priority:
+    - macro_economic         # General economy
+    - consumer_sentiment     # Trust in fintech
+
+market_sizing:
+  tam_calculation: "top_down"
+  growth_rate_model: "linear"  # Fintech maturing
+  
+  penetration_assumptions:
+    sam_multiplier: 0.20     # Regulated markets
+    som_multiplier: 0.15
+    year_1: 0.003
+    year_3: 0.015
+    year_5: 0.05
+
+competitive_positioning:
+  key_factors:
+    - regulatory_licenses    # Banking, money transmitter
+    - brand_trust            # Consumer trust critical
+    - product_breadth        # Full-stack vs niche
+    - technology_stack       # Core banking systems
+    - distribution_channels  # Direct, embedded, B2B2C
+  
+  moat_indicators:
+    banking_license:
+      threshold: "full_bank"
+      moat_contribution: 0.35
+    
+    customer_deposits:
+      threshold: "$1B+"
+      moat_contribution: 0.25
+    
+    multi_product_platform:
+      threshold: "3+"
+      moat_contribution: 0.2
+    
+    regulatory_compliance:
+      threshold: "tier_1"
+      moat_contribution: 0.2
+
+regulatory_risk:
+  us_regulations:
+    federal:
+      - bsa_aml                # Bank Secrecy Act, Anti-Money Laundering
+      - ofac                   # Office of Foreign Assets Control
+      - cfpb                   # Consumer Financial Protection Bureau
+      - occ                    # Office of the Comptroller
+      - fdic                   # Federal Deposit Insurance Corporation
+    
+    state:
+      - money_transmitter      # State-by-state licensing
+      - lending_licenses       # State lending regulations
+    
+    payment_networks:
+      - pci_dss                # Payment Card Industry Data Security
+      - card_network_rules     # Visa, Mastercard compliance
+  
+  international:
+    eu:
+      - psd2                   # Payment Services Directive
+      - mifid                  # Markets in Financial Instruments
+      - gdpr                   # Data protection
+    
+    uk:
+      - fca_authorization      # Financial Conduct Authority
+      - open_banking           # UK open banking standards
+  
+  compliance_cost:
+    tier_1_bank: "$10M-50M/year"
+    licensed_fintech: "$2M-10M/year"
+    unlicensed_fintech: "$500K-2M/year"
+
+financial_forecasting:
+  model_type: "unit_economics"
+  forecast_horizon: 36
+  
+  key_drivers:
+    - transaction_volume
+    - take_rate
+    - fraud_rate
+    - interest_income
+    - compliance_costs
+  
+  unit_economics:
+    payment_processor:
+      revenue_per_transaction: "$0.10-$0.30"
+      cost_per_transaction: "$0.05-$0.15"
+      margin: "30-50%"
+    
+    neobank:
+      revenue_per_customer: "$100-$300/year"
+      cac: "$50-$150"
+      ltv: "$500-$2000"
+    
+    lending:
+      interest_spread: "3-8%"
+      default_rate: "1-5%"
+      servicing_cost: "1-2%"
+
+governance:
+  authorization_tier: tier_2  # Financial services = higher scrutiny
+  benefit_threshold: 70
+  harm_threshold: 30
+  
+  special_considerations:
+    - consumer_protection    # CFPB requirements
+    - systemic_risk          # Financial stability
+    - fair_lending           # Anti-discrimination
+    - data_privacy           # Financial data = sensitive
+    - aml_kyc                # Anti-money laundering, Know Your Customer
+
+success_benchmarks:
+  excellent:
+    transaction_volume: 1000000  # 1M+ transactions/month
+    take_rate: 2.0                # 2%+
+    fraud_rate: 0.05              # <0.05%
+    nps: 60                       # Net Promoter Score 60+
+  
+  good:
+    transaction_volume: 100000
+    take_rate: 1.5
+    fraud_rate: 0.1
+    nps: 40
+  
+  acceptable:
+    transaction_volume: 10000
+    take_rate: 1.0
+    fraud_rate: 0.2
+    nps: 20
+
+valuation:
+  revenue_multiples:
+    top_tier: 10-20          # Full-stack neobanks
+    strong: 5-10             # Specialized fintech
+    average: 3-5             # Payment processors
+    struggling: 1-3          # Commodity services
+  
+  factors_increasing_multiple:
+    - banking_license        # Full bank charter
+    - deposit_base           # Customer deposits
+    - profitability          # Positive unit economics
+    - regulatory_compliance  # SOC 2, PCI-DSS, etc.
+    - enterprise_customers   # B2B revenue
+
+notes: |
+  FinTech companies are unique in tech because:
+  1. Heavily regulated (banking, payments, lending)
+  2. Capital requirements (reserves, insurance)
+  3. Partner dependencies (sponsor banks, card networks)
+  4. Fraud risk (constant cybersecurity threat)
+  5. Trust = critical (handling money)
+  
+  Three FinTech models:
+  1. Full-stack bank (Chime, Varo) - highest regulatory burden
+  2. Embedded finance (Stripe, Plaid) - platform model
+  3. Vertical SaaS + payments (Toast, Mindbody) - product-led
+  
+  Critical diligence areas:
+  - Regulatory licenses (do they have them?)
+  - Sponsor bank relationships (how stable?)
+  - Fraud rates (industry standard: 0.05-0.15%)
+  - Unit economics (positive after CAC?)
+  - Compliance costs (can they scale?)
+  
+  Red flags:
+  - No money transmitter licenses
+  - High fraud rates (>0.5%)
+  - Negative unit economics at scale
+  - Regulatory violations in past
+  - Weak cybersecurity posture

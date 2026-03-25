@@ -1,0 +1,180 @@
+# Technology Domain Manifests (15 domains)
+---
+# Cloud Computing
+domain_name: "Cloud Computing"
+domain_type: "technology"
+description: "IaaS, PaaS, SaaS, multi-cloud, hybrid cloud, cloud-native architecture"
+ontology:
+  key_concepts: ["Compute Resources", "Storage", "Networking", "Scaling", "Multi-Cloud"]
+kpis: [{name: "Service Uptime", target: 99.99}, {name: "Resource Utilization", target: 85}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Data Platforms", "Networks & Edge", "DevOps Toolchains"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Data Platforms
+domain_name: "Data Platforms"
+domain_type: "technology"
+description: "Data warehouses, lakes, lakehouses, ETL, real-time streaming, analytics"
+ontology:
+  key_concepts: ["Data Pipeline", "ETL", "Data Quality", "Real-time Processing", "Analytics"]
+kpis: [{name: "Data Quality", target: 99}, {name: "Query Performance", target: 95}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Cloud Computing", "AI/ML Systems", "Advanced Computing & Chips"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Artificial Intelligence / ML
+domain_name: "AI/ML Systems"
+domain_type: "technology"
+description: "Machine learning, deep learning, LLMs, computer vision, reinforcement learning"
+ontology:
+  key_concepts: ["Model Training", "Inference", "Model Performance", "AI Safety", "Bias Detection"]
+kpis: [{name: "Model Accuracy", target: 95}, {name: "Inference Latency", target: 100}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Data Platforms", "Advanced Computing & Chips", "Cloud Computing"]
+governance: {sensitivity_level: "critical", authorization_tier: "tier_3"}
+
+---
+# Cybersecurity
+domain_name: "Cybersecurity"
+domain_type: "technology"
+description: "Threat detection, incident response, vulnerability management, security operations"
+ontology:
+  key_concepts: ["Threat Intelligence", "Vulnerability", "Incident Response", "Zero Trust"]
+kpis: [{name: "Threat Detection Rate", target: 99}, {name: "Mean Time to Detect", target: 5}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: false, use_uie: true, use_ile: true}
+related_domains: ["Networks & Edge", "Cloud Computing", "AI/ML Systems"]
+governance: {sensitivity_level: "critical", authorization_tier: "tier_3"}
+
+---
+# Networks & Edge
+domain_name: "Networks & Edge"
+domain_type: "technology"
+description: "SDN, edge computing, 5G, network optimization, distributed systems"
+ontology:
+  key_concepts: ["Edge Computing", "Network Latency", "Bandwidth", "SDN", "5G"]
+kpis: [{name: "Network Uptime", target: 99.99}, {name: "Average Latency", target: 20}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["IoT", "Cloud Computing", "Telecommunications & Internet"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Internet of Things
+domain_name: "IoT"
+domain_type: "technology"
+description: "Sensors, actuators, device management, IoT platforms, edge intelligence"
+ontology:
+  key_concepts: ["Device Management", "Sensor Data", "Edge Processing", "Device Security"]
+kpis: [{name: "Device Uptime", target: 99.9}, {name: "Data Freshness", target: 95}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Networks & Edge", "AI/ML Systems", "Cybersecurity"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Enterprise Apps & ERP
+domain_name: "Enterprise Apps & ERP"
+domain_type: "technology"
+description: "ERP systems, CRM, HCM, supply chain management, enterprise integration"
+ontology:
+  key_concepts: ["Business Process", "Integration", "Workflow", "Master Data"]
+kpis: [{name: "System Availability", target: 99.9}, {name: "User Adoption", target: 85}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: false, use_uie: true, use_ile: true}
+related_domains: ["Cloud Computing", "Data Platforms"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Blockchain & Digital Assets
+domain_name: "Blockchain & Digital Assets"
+domain_type: "technology"
+description: "Distributed ledgers, smart contracts, cryptocurrencies, DeFi, NFTs"
+ontology:
+  key_concepts: ["Consensus Mechanisms", "Smart Contracts", "Token Economics", "DeFi"]
+kpis: [{name: "Transaction Throughput", target: 1000}, {name: "Network Security", target: 99.9}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Cybersecurity", "Financial Services", "Payments & Digital Identity"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Robotics & Automation
+domain_name: "Robotics & Automation"
+domain_type: "technology"
+description: "Industrial robotics, autonomous systems, RPA, process automation"
+ontology:
+  key_concepts: ["Robot Control", "Automation Workflow", "Sensor Integration", "Safety Systems"]
+kpis: [{name: "Robot Uptime", target: 95}, {name: "Process Efficiency", target: 90}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["AI/ML Systems", "IoT", "Manufacturing & Industrial"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Advanced Computing & Chips
+domain_name: "Advanced Computing & Chips"
+domain_type: "technology"
+description: "Quantum computing, neuromorphic chips, specialized processors, HPC"
+ontology:
+  key_concepts: ["Quantum Algorithms", "Neuromorphic Architecture", "Chip Design", "HPC"]
+kpis: [{name: "Computational Power", target: 1000}, {name: "Energy Efficiency", target: 85}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["AI/ML Systems", "Cloud Computing", "Data Platforms"]
+governance: {sensitivity_level: "critical", authorization_tier: "tier_3"}
+
+---
+# DevOps Toolchains
+domain_name: "DevOps Toolchains"
+domain_type: "technology"
+description: "CI/CD, infrastructure as code, observability, deployment automation"
+ontology:
+  key_concepts: ["CI/CD Pipeline", "Infrastructure as Code", "Observability", "Deployment"]
+kpis: [{name: "Deployment Frequency", target: 100}, {name: "MTTR", target: 30}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Cloud Computing", "Cybersecurity"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# HCI & Spatial Computing
+domain_name: "HCI & Spatial Computing"
+domain_type: "technology"
+description: "AR/VR, spatial interfaces, human-computer interaction, immersive tech"
+ontology:
+  key_concepts: ["Spatial Interface", "Immersion", "User Experience", "3D Interaction"]
+kpis: [{name: "Frame Rate", target: 90}, {name: "Latency", target: 20}]
+engine_preferences: {use_bue: true, use_urpe: false, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["AI/ML Systems", "Advanced Computing & Chips"]
+governance: {sensitivity_level: "standard", authorization_tier: "tier_1"}
+
+---
+# Bioengineering Platforms
+domain_name: "Bioengineering Platforms"
+domain_type: "technology"
+description: "CRISPR, synthetic biology, gene editing, biotech platforms"
+ontology:
+  key_concepts: ["Gene Editing", "Synthetic Biology", "Protein Engineering", "Biosafety"]
+kpis: [{name: "Editing Accuracy", target: 99}, {name: "Safety Score", target: 99.9}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: false, use_uie: true, use_ile: true}
+related_domains: ["Healthcare & Life Sciences", "AI/ML Systems"]
+governance: {sensitivity_level: "critical", authorization_tier: "tier_3"}
+
+---
+# Clean Energy Tech
+domain_name: "Clean Energy Tech"
+domain_type: "technology"
+description: "Solar, wind, batteries, grid tech, energy storage systems"
+ontology:
+  key_concepts: ["Energy Storage", "Solar Efficiency", "Grid Integration", "Carbon Reduction"]
+kpis: [{name: "Energy Efficiency", target: 85}, {name: "Cost per kWh", target: 0.05}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: true, use_uie: true, use_ile: true}
+related_domains: ["Energy & Fuels", "IoT", "Advanced Computing & Chips"]
+governance: {sensitivity_level: "elevated", authorization_tier: "tier_2"}
+
+---
+# Payments & Digital Identity
+domain_name: "Payments & Digital Identity"
+domain_type: "technology"
+description: "Payment processing, digital wallets, identity verification, authentication"
+ontology:
+  key_concepts: ["Payment Processing", "Identity Verification", "Authentication", "Fraud Prevention"]
+kpis: [{name: "Transaction Success", target: 99.9}, {name: "Fraud Rate", target: 0.01}]
+engine_preferences: {use_bue: true, use_urpe: true, use_udoa: true, use_ceoa: false, use_uie: true, use_ile: true}
+related_domains: ["Blockchain & Digital Assets", "Cybersecurity", "Financial Services"]
+governance: {sensitivity_level: "critical", authorization_tier: "tier_3"}

@@ -1,0 +1,218 @@
+# AI/ML Industry Manifest
+# Configuration for BUE Agent analyzing AI/ML companies
+
+industry: "AI/ML"
+category: "SW:AI_ML"
+
+analysis_strategy:
+  default: "comprehensive"
+  requires_external_data: true
+  requires_strategic_context: true  # Geopolitical implications
+  
+  child_agents_needed:
+    - market_sizing
+    - technology_assessment
+    - competitive_positioning
+    - regulatory_risk
+
+metrics:
+  critical:
+    - model_performance       # Accuracy, precision, recall
+    - training_efficiency     # Cost per training run
+    - inference_latency       # Response time
+    - data_quality            # Training data quality
+    - model_drift_rate        # How fast models degrade
+    - compute_costs           # GPU/TPU costs
+  
+  industry_specific:
+    - api_call_volume         # Usage metrics
+    - embedding_quality       # Vector representation quality
+    - fine_tuning_efficiency  # Cost to customize
+    - context_window_size     # How much data model can process
+    - multimodal_capability   # Text, image, video, audio
+
+risk_factors:
+  high_priority:
+    - model_hallucination     # Generating false information
+    - bias_discrimination     # Algorithmic bias
+    - data_privacy_breach     # Training on sensitive data
+    - compute_dependency      # Reliance on NVIDIA/cloud providers
+    - regulatory_uncertainty  # AI regulation evolving
+    - agi_risk                # Existential AI safety concerns
+  
+  medium_priority:
+    - competition_from_big_tech  # OpenAI, Google, Anthropic
+    - open_source_disruption     # Llama, Mistral, etc.
+    - talent_retention           # AI researchers in demand
+    - intellectual_property      # Patent/copyright unclear
+  
+  low_priority:
+    - hardware_limitations    # Moore's Law slowing
+    - energy_consumption      # Carbon footprint concerns
+
+market_sizing:
+  tam_calculation: "bottom_up"  # AI market still emerging
+  growth_rate_model: "exponential"
+  
+  penetration_assumptions:
+    sam_multiplier: 0.25      # AI is broad market
+    som_multiplier: 0.15      # High competition
+    year_1: 0.005             # Faster adoption
+    year_3: 0.03
+    year_5: 0.10              # Rapid growth expected
+
+competitive_positioning:
+  key_factors:
+    - model_quality           # Benchmarks (MMLU, HumanEval, etc.)
+    - training_data_moat      # Proprietary datasets
+    - compute_efficiency      # Performance per dollar
+    - developer_ecosystem     # API adoption, tooling
+    - safety_alignment        # Constitutional AI, RLHF
+  
+  moat_indicators:
+    proprietary_data:
+      threshold: "unique"     # Proprietary training data
+      moat_contribution: 0.35
+    
+    model_performance:
+      threshold: "state_of_art"
+      moat_contribution: 0.25
+    
+    inference_efficiency:
+      threshold: "2x_faster"  # 2x faster than competitors
+      moat_contribution: 0.2
+    
+    safety_framework:
+      threshold: "constitutional"
+      moat_contribution: 0.2
+
+technology_assessment:
+  technical_factors:
+    - architecture_innovation  # Novel model architectures
+    - scaling_laws            # Performance vs compute
+    - inference_optimization  # Quantization, distillation
+    - fine_tuning_capability  # PEFT, LoRA, etc.
+    - multimodal_integration  # Vision, audio, text
+  
+  defensibility:
+    high:
+      - proprietary_algorithms
+      - exclusive_data_rights
+      - patent_portfolio
+      - constitutional_governance  # Unique to Aetherion
+    
+    medium:
+      - specialized_domain_models
+      - custom_training_pipelines
+      - integration_ecosystem
+    
+    low:
+      - generic_model_wrappers
+      - API_only_business
+      - commodity_infrastructure
+
+regulatory_risk:
+  jurisdictions:
+    us:
+      - executive_order_ai      # Biden EO on AI safety
+      - export_controls         # Chip export to China
+      - copyright_lawsuits      # Training data legality
+    
+    eu:
+      - ai_act                  # EU AI Act (2024)
+      - gdpr                    # Data protection
+      - copyright_directive     # Content licensing
+    
+    china:
+      - algorithm_registration  # CAC requirements
+      - data_localization       # Data sovereignty
+      - tech_transfer           # IP protection
+  
+  compliance_requirements:
+    - model_transparency      # Explainability
+    - bias_testing           # Fairness audits
+    - safety_validation      # Red teaming
+    - data_provenance        # Training data documentation
+
+governance:
+  authorization_tier: tier_2  # Higher scrutiny for AI
+  benefit_threshold: 70       # Higher bar
+  harm_threshold: 30          # Lower tolerance
+  
+  special_considerations:
+    - agi_risk_assessment     # Existential risk
+    - bias_amplification      # Discrimination concerns
+    - deepfake_potential      # Misuse for deception
+    - autonomous_weapons      # Military applications
+    - job_displacement        # Economic impact
+    - constitutional_alignment # Human primacy
+
+success_benchmarks:
+  excellent:
+    model_performance: 95     # Top 5% on benchmarks
+    inference_latency: 100    # <100ms
+    compute_efficiency: 2.0   # 2x better than baseline
+    api_adoption: 10000       # 10K+ developers
+  
+  good:
+    model_performance: 85     # Top 15%
+    inference_latency: 250    # <250ms
+    compute_efficiency: 1.5   # 1.5x better
+    api_adoption: 1000        # 1K+ developers
+  
+  acceptable:
+    model_performance: 75     # Top 25%
+    inference_latency: 500    # <500ms
+    compute_efficiency: 1.0   # Baseline
+    api_adoption: 100         # 100+ developers
+
+valuation:
+  revenue_multiples:
+    top_tier: 20-40           # Foundation model leaders
+    strong: 15-25             # Specialized AI platforms
+    average: 8-15             # AI applications
+    struggling: 3-8           # Commodity AI services
+  
+  factors_increasing_multiple:
+    - foundation_model        # Base model capability
+    - proprietary_data        # Unique training data
+    - safety_leadership       # Constitutional governance
+    - enterprise_traction     # Fortune 500 customers
+    - government_contracts    # Defense, intelligence
+
+strategic_considerations:
+  geopolitical:
+    - us_china_ai_race        # Technology competition
+    - chip_export_controls    # NVIDIA restrictions
+    - data_sovereignty        # National security
+    - talent_competition      # AI researcher visas
+  
+  market_dynamics:
+    - open_source_pressure    # Llama, Mistral
+    - big_tech_dominance      # OpenAI, Google, Anthropic
+    - specialized_niches      # Vertical AI solutions
+    - infrastructure_layer    # Compute, data, tooling
+
+notes: |
+  AI/ML companies in 2025 are evaluated on:
+  1. Model capability (benchmarks, performance)
+  2. Safety & alignment (constitutional governance)
+  3. Compute efficiency (inference cost per query)
+  4. Data moat (proprietary training data)
+  5. Regulatory positioning (compliance-ready)
+  
+  Constitutional Governance is a MAJOR competitive advantage:
+  - Only Aetherion has this natively
+  - 2-4 year moat vs competitors
+  - Enables government/defense contracts
+  - Required for AGI-level systems
+  
+  The AI market is bifurcating:
+  - Foundation models (OpenAI, Anthropic, Google)
+  - Specialized applications (vertical AI)
+  - Infrastructure (compute, data, tooling)
+  
+  Aetherion occupies unique position:
+  - Distributed intelligence (not monolithic)
+  - Constitutional governance (human-aligned)
+  - Multi-agent architecture (CGI vs AGI)

@@ -1,0 +1,165 @@
+# Cortex Gateway Tools Catalog
+# UIE only calls these tools - never calls engines directly
+
+version: "1.0.0"
+last_updated: "2025-11-12T00:00:00Z"
+
+tools:
+  plan:
+    name: "plan"
+    description: "Generate an execution plan for a complex query. Returns a structured plan with steps."
+    parameters:
+      - name: "query"
+        type: "string"
+        description: "The user's query to plan for"
+        required: true
+      - name: "context_refs"
+        type: "array"
+        description: "References to context data"
+        required: false
+      - name: "domains"
+        type: "array"
+        description: "Relevant domains for planning"
+        required: false
+    returns: "Structured execution plan with ordered steps and dependencies"
+    metadata:
+      category: "orchestration"
+      latency_estimate_ms: 500.0
+      cost_per_call: 0.005
+      requires_auth: true
+      rate_limit_per_minute: 100
+    version: "1.0.0"
+    deprecated: false
+  
+  enrich:
+    name: "enrich"
+    description: "Enrich a query with additional context from UDOA. Retrieves relevant data."
+    parameters:
+      - name: "query"
+        type: "string"
+        description: "The query to enrich"
+        required: true
+      - name: "data_sources"
+        type: "array"
+        description: "Specific data sources to query (optional, auto-detected if omitted)"
+        required: false
+      - name: "max_results"
+        type: "number"
+        description: "Maximum number of results to return"
+        required: false
+        default: 10
+    returns: "Enriched context data with citations"
+    metadata:
+      category: "data"
+      latency_estimate_ms: 800.0
+      cost_per_call: 0.01
+      requires_auth: true
+      rate_limit_per_minute: 50
+    version: "1.0.0"
+    deprecated: false
+  
+  validate:
+    name: "validate"
+    description: "Validate a proposed answer or plan against policies and data constraints."
+    parameters:
+      - name: "content"
+        type: "string"
+        description: "Content to validate"
+        required: true
+      - name: "validation_type"
+        type: "string"
+        description: "Type of validation: factual, policy, safety"
+        required: true
+        enum: ["factual", "policy", "safety", "all"]
+      - name: "policy_context"
+        type: "object"
+        description: "Policy context for validation"
+        required: false
+    returns: "Validation result with pass/fail and specific issues"
+    metadata:
+      category: "governance"
+      latency_estimate_ms: 300.0
+      cost_per_call: 0.002
+      requires_auth: true
+      rate_limit_per_minute: 200
+    version: "1.0.0"
+    deprecated: false
+  
+  compute:
+    name: "compute"
+    description: "Execute a computational task via CEOA. Runs analysis, simulations, or processing."
+    parameters:
+      - name: "task_type"
+        type: "string"
+        description: "Type of computation: analysis, simulation, transform"
+        required: true
+        enum: ["analysis", "simulation", "transform", "optimization"]
+      - name: "input_data"
+        type: "object"
+        description: "Input data for computation"
+        required: true
+      - name: "parameters"
+        type: "object"
+        description: "Computation parameters"
+        required: false
+    returns: "Computation results with summary and full data"
+    metadata:
+      category: "compute"
+      latency_estimate_ms: 2000.0
+      cost_per_call: 0.05
+      requires_auth: true
+      rate_limit_per_minute: 20
+    version: "1.0.0"
+    deprecated: false
+  
+  analyze_risk:
+    name: "analyze_risk"
+    description: "Perform risk analysis via BUE or URPE depending on scenario."
+    parameters:
+      - name: "scenario"
+        type: "object"
+        description: "Scenario to analyze"
+        required: true
+      - name: "analysis_type"
+        type: "string"
+        description: "Type of risk analysis"
+        required: true
+        enum: ["financial", "operational", "strategic", "existential"]
+      - name: "time_horizon"
+        type: "string"
+        description: "Time horizon for analysis"
+        required: false
+        default: "1year"
+    returns: "Risk assessment with probabilities, impacts, and recommendations"
+    metadata:
+      category: "analysis"
+      latency_estimate_ms: 3000.0
+      cost_per_call: 0.10
+      requires_auth: true
+      rate_limit_per_minute: 10
+    version: "1.0.0"
+    deprecated: false
+  
+  synthesize:
+    name: "synthesize"
+    description: "Synthesize multiple data sources or analysis results into a coherent response."
+    parameters:
+      - name: "inputs"
+        type: "array"
+        description: "Array of inputs to synthesize"
+        required: true
+      - name: "synthesis_style"
+        type: "string"
+        description: "Style of synthesis: summary, comparison, integration"
+        required: false
+        default: "integration"
+        enum: ["summary", "comparison", "integration", "recommendation"]
+    returns: "Synthesized output with integrated insights"
+    metadata:
+      category: "synthesis"
+      latency_estimate_ms: 1000.0
+      cost_per_call: 0.015
+      requires_auth: true
+      rate_limit_per_minute: 50
+    version: "1.0.0"
+    deprecated: false

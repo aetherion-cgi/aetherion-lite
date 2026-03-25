@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aetherion-common"
+version = "1.0.0"
+description = "Shared schemas and data models for Aetherion integration fabric"
+readme = "README.md"
+authors = [
+    {name = "Aetherion Team"}
+]
+requires-python = ">=3.11"
+license = { text = "Proprietary - Aetherion Internal Use Only" }
+dependencies = [
+    "pydantic>=1.10.0,<2.0.0", "fastapi>=0.95.0,<0.104.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "mypy>=1.0.0",
+]
+
+[tool.setuptools]
+packages = ["aetherion_common"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  bue-api:
+    build: .
+    container_name: bue-api
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=production
+      - DATABASE_URL=postgresql://bue:bue_password@postgres:5432/bue
+      - REDIS_URL=redis://redis:6379/0
+      - ENABLE_GPU=false
+      - ENABLE_STREAMING=true
+      - ENABLE_FORECASTING=true
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: bue-postgres
+    environment:
+      - POSTGRES_DB=bue
+      - POSTGRES_USER=bue
+      - POSTGRES_PASSWORD=bue_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: bue-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  redis-data:

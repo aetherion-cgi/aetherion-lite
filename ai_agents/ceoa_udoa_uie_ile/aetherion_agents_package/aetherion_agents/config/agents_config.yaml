@@ -1,0 +1,232 @@
+# Aetherion Agents Configuration
+# Configuration for all AI agents in the Aetherion platform
+
+agents:
+  # Global agent settings
+  global:
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 4000
+    temperature: 0.7
+    governance_endpoint: "http://localhost:8002/governance"
+    ile_endpoint: "http://localhost:8007/ile"
+    
+  # CEOA (Compute & Energy Orchestration API)
+  ceoa:
+    enabled: true
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 3000
+    temperature: 0.5  # More deterministic for placement decisions
+    
+    cloud_providers:
+      aws:
+        enabled: true
+        regions: ["us-east-1", "us-west-2", "eu-west-1", "ap-southeast-1"]
+        carbon_intensity: 0.42  # kg CO2/kWh
+      
+      gcp:
+        enabled: true
+        regions: ["us-central1", "europe-west1", "asia-east1"]
+        carbon_intensity: 0.38
+      
+      azure:
+        enabled: true
+        regions: ["eastus", "westeurope", "southeastasia"]
+        carbon_intensity: 0.45
+    
+    optimization:
+      default_priority: "balanced"  # cost|carbon|performance|balanced
+      carbon_target_reduction: 0.15  # 15% reduction target
+      cost_optimization_threshold: 0.20  # optimize if >20% savings possible
+  
+  # UIE (Universal Intelligence Engine)
+  uie:
+    enabled: true
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 5000
+    temperature: 0.7
+    
+    engine_endpoints:
+      bue: "http://localhost:8003/bue"
+      urpe: "http://localhost:8004/urpe"
+      udoa: "http://localhost:8005/udoa"
+      ceoa: "http://localhost:8006/ceoa"
+    
+    response_formats:
+      - executive_summary
+      - detailed_analysis
+      - comparative_table
+      - scenario_narrative
+      - risk_opportunity_matrix
+    
+    persona_defaults:
+      executive: "executive_summary"
+      analyst: "detailed_analysis"
+      technical: "detailed_analysis"
+      strategic: "scenario_narrative"
+    
+    synthesis:
+      min_confidence_for_recommendation: 0.70
+      multi_engine_confidence_boost: 0.10
+  
+  # UDOA (Universal Data Orchestration API)
+  udoa:
+    enabled: true
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 4000
+    temperature: 0.6
+    
+    data_sources:
+      aetherion_internal:
+        type: "postgresql"
+        enabled: true
+        jurisdiction: "US"
+        connection_string: "${DATABASE_URL}"
+      
+      fred_api:
+        type: "rest_api"
+        enabled: true
+        endpoint: "https://api.stlouisfed.org/fred"
+        api_key: "${FRED_API_KEY}"
+        jurisdiction: "US"
+        rate_limit: 120  # requests per minute
+      
+      world_bank:
+        type: "rest_api"
+        enabled: true
+        endpoint: "https://api.worldbank.org/v2"
+        jurisdiction: "International"
+        rate_limit: 60
+      
+      yahoo_finance:
+        type: "rest_api"
+        enabled: true
+        endpoint: "https://query1.finance.yahoo.com"
+        jurisdiction: "US"
+        rate_limit: 2000  # requests per hour
+    
+    compliance:
+      enforce_jurisdiction: true
+      gdpr_compliance: true
+      data_residency_rules:
+        EU: ["aetherion_internal_eu", "world_bank"]
+        US: ["aetherion_internal", "fred_api", "yahoo_finance", "world_bank"]
+        APAC: ["world_bank"]
+    
+    entity_resolution:
+      confidence_threshold: 0.85
+      max_candidates: 5
+  
+  # ILE (Internal Learning Engine)
+  ile:
+    enabled: true
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 2000
+    temperature: 0.8  # More creative for pattern discovery
+    
+    observation:
+      enabled: true
+      storage_backend: "postgresql"
+      retention_days: 90
+      session_aggregation: true
+    
+    pattern_extraction:
+      min_observations: 10
+      confidence_threshold: 0.70
+      extraction_frequency: "every_25_decisions"
+      
+    feedback:
+      enabled: true
+      feedback_frequency: "weekly"
+      priority_threshold: "medium"  # Only provide feedback for medium+ priority patterns
+    
+    baselines:
+      ceoa:
+        avg_duration_ms: 2000
+        confidence: 0.80
+      
+      uie:
+        avg_duration_ms: 3000
+        confidence: 0.85
+      
+      udoa:
+        avg_duration_ms: 1500
+        confidence: 0.90
+      
+      bue:
+        avg_duration_ms: 5000
+        confidence: 0.88
+      
+      urpe:
+        avg_duration_ms: 4000
+        confidence: 0.82
+
+# Hybrid routing configuration
+hybrid_routing:
+  enabled: true
+  default_strategy: "agent"  # agent|production|auto
+  
+  # When to use agents vs production engines (once production engines exist)
+  routing_rules:
+    - query_pattern: "novel"
+      confidence_threshold: 0.80
+      route_to: "agent"
+    
+    - query_pattern: "standard"
+      confidence_threshold: 0.95
+      route_to: "production"  # When available
+    
+    - query_pattern: "strategic"
+      route_to: "agent"  # Always use agent for strategic decisions
+    
+    - query_pattern: "high_stakes"
+      route_to: "both"  # Validate with both agent and production
+  
+  fallback:
+    on_production_error: "agent"
+    on_agent_error: "production"  # When available
+    on_both_error: "graceful_degradation"
+
+# Monitoring and observability
+monitoring:
+  enabled: true
+  
+  metrics:
+    - agent_decision_count
+    - agent_decision_duration_ms
+    - agent_confidence_score
+    - governance_approval_rate
+    - child_agents_spawned
+  
+  logging:
+    level: "INFO"
+    format: "json"
+    destination: "stdout"
+  
+  alerts:
+    low_confidence_threshold: 0.60
+    high_latency_threshold_ms: 10000
+    governance_rejection_rate_threshold: 0.10
+
+# Constitutional Governance integration
+governance:
+  enabled: true
+  mode: "enforcing"  # enforcing|permissive|observing
+  
+  benefit_threshold: 50
+  harm_threshold: 70
+  
+  authorization_tiers:
+    tier_1:
+      benefit_min: 70
+      harm_max: 30
+      human_approval: false
+    
+    tier_2:
+      benefit_min: 50
+      harm_max: 50
+      human_approval: false
+    
+    tier_3:
+      benefit_min: 0
+      harm_max: 70
+      human_approval: true

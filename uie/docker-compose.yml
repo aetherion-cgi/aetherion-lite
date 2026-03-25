@@ -1,0 +1,359 @@
+# Aetherion Platform - Docker Compose Configuration
+# New Architecture: UIE as sole public interface (port 8000)
+# All other services are internal-only
+
+version: '3.8'
+
+networks:
+  public:
+    driver: bridge
+  internal:
+    driver: bridge
+    internal: true  # No external routing - completely isolated
+
+volumes:
+  postgres_data:
+  neo4j_data:
+  redis_data:
+  redpanda_data:
+
+services:
+  # ==========================================================================
+  # PUBLIC LAYER - ONLY UIE
+  # ==========================================================================
+  
+  uie:
+    build:
+      context: .
+      dockerfile: universal-intelligence-engine/Dockerfile
+    container_name: aetherion-uie
+    ports:
+      - "8000:8000"  # ONLY PUBLIC PORT
+    networks:
+      - public
+      - internal
+    environment:
+      # Server
+      - UIE_HOST=0.0.0.0
+      - UIE_PORT=8000
+      - UIE_MODE=public
+      - UIE_WORKERS=4
+      
+      # Security
+      - UIE_REQUIRE_API_KEY=true
+      - UIE_ALLOWED_API_KEYS=${AETHERION_API_KEYS}
+      
+      # Rate limiting
+      - UIE_RATE_LIMIT_ENABLED=true
+      - UIE_RATE_LIMIT_PER_MINUTE=60
+      - UIE_RATE_LIMIT_PER_HOUR=1000
+      
+      # Function Broker connection
+      - FUNCTION_BROKER_URL=https://function-broker:8081
+      - FUNCTION_BROKER_TIMEOUT=300
+      
+      # mTLS
+      - MTLS_ENABLED=true
+      - MTLS_CERT_PATH=/certs/uie.crt
+      - MTLS_KEY_PATH=/certs/uie.key
+      - MTLS_CA_PATH=/certs/ca.crt
+      
+      # Conversation
+      - SESSION_TIMEOUT_MINUTES=60
+      - MAX_CONVERSATION_HISTORY=50
+      
+      # Governance
+      - GOVERNANCE_ENABLED=true
+      - DEFAULT_JURISDICTION=US
+      
+      # Logging
+      - LOG_LEVEL=INFO
+      - LOG_FORMAT=json
+    volumes:
+      - ./certs:/certs:ro
+    depends_on:
+      - function-broker
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ==========================================================================
+  # INTERNAL LAYER - ORCHESTRATION
+  # ==========================================================================
+  
+  function-broker:
+    build:
+      context: .
+      dockerfile: function-broker/Dockerfile
+    container_name: aetherion-function-broker
+    # NO PUBLIC PORTS
+    expose:
+      - "8081"
+    networks:
+      - internal
+    environment:
+      - BROKER_HOST=0.0.0.0
+      - BROKER_PORT=8081
+      - MTLS_ENABLED=true
+      - MTLS_CERT_PATH=/certs/broker.crt
+      - MTLS_KEY_PATH=/certs/broker.key
+      - MTLS_CA_PATH=/certs/ca.crt
+      - OPA_URL=http://opa:8181
+    volumes:
+      - ./certs:/certs:ro
+      - ./function-broker/capabilities:/app/capabilities:ro
+    depends_on:
+      - opa
+      - bue
+      - ceoa
+      - udoa
+      - uie-engine  # UIE engine component (internal)
+      - ile
+      - domain-cortex
+    restart: unless-stopped
+
+  # ==========================================================================
+  # INTERNAL LAYER - INTELLIGENCE ENGINES
+  # ==========================================================================
+  
+  uie-engine:
+    # This is the internal UIE engine component (not public-facing)
+    # The public UIE service calls this for LLM capabilities
+    build:
+      context: .
+      dockerfile: universal-intelligence-engine/uie-engine/Dockerfile
+    container_name: aetherion-uie-engine
+    expose:
+      - "8000"
+    networks:
+      - internal
+    environment:
+      - UIE_MODE=internal
+      - MTLS_ENABLED=true
+    restart: unless-stopped
+
+  bue:
+    build:
+      context: .
+      dockerfile: bue-ultimate/Dockerfile
+    container_name: aetherion-bue
+    expose:
+      - "9000"
+    networks:
+      - internal
+    environment:
+      - BUE_PORT=9000
+      - POSTGRES_URL=postgresql://aetherion:${POSTGRES_PASSWORD}@postgres:5432/aetherion
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  ceoa:
+    build:
+      context: .
+      dockerfile: ceoa-complete/Dockerfile
+    container_name: aetherion-ceoa
+    expose:
+      - "7100"
+    networks:
+      - internal
+    environment:
+      - CEOA_PORT=7100
+    restart: unless-stopped
+
+  udoa:
+    build:
+      context: .
+      dockerfile: udoa-complete-v3.0/Dockerfile
+    container_name: aetherion-udoa
+    expose:
+      - "7000"
+    networks:
+      - internal
+    environment:
+      - UDOA_PORT=7000
+      - POSTGRES_URL=postgresql://aetherion:${POSTGRES_PASSWORD}@postgres:5432/aetherion
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  ile:
+    build:
+      context: .
+      dockerfile: ILE_Complete_Implementation/Dockerfile
+    container_name: aetherion-ile
+    expose:
+      - "7400"
+    networks:
+      - internal
+    environment:
+      - ILE_PORT=7400
+    restart: unless-stopped
+
+  domain-cortex:
+    build:
+      context: .
+      dockerfile: domain_cortex_v1.0.0_complete/Dockerfile
+    container_name: aetherion-domain-cortex
+    expose:
+      - "7500"
+    networks:
+      - internal
+    environment:
+      - DOMAIN_CORTEX_PORT=7500
+      - NEO4J_URL=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+    depends_on:
+      - neo4j
+    restart: unless-stopped
+
+  urpe:
+    # URPE is isolated - only Function Broker can reach it
+    build:
+      context: .
+      dockerfile: urpe/Dockerfile
+    container_name: aetherion-urpe
+    expose:
+      - "7300"
+    networks:
+      - internal
+    environment:
+      - URPE_PORT=7300
+      - GOVERNANCE_STRICT_MODE=true
+    restart: unless-stopped
+
+  # ==========================================================================
+  # GOVERNANCE LAYER
+  # ==========================================================================
+  
+  opa:
+    image: openpolicyagent/opa:latest
+    container_name: aetherion-opa
+    expose:
+      - "8181"
+    networks:
+      - internal
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=info"
+      - "/policies"
+    volumes:
+      - ./constitutional-governance/policies:/policies:ro
+    restart: unless-stopped
+
+  # ==========================================================================
+  # INFRASTRUCTURE LAYER
+  # ==========================================================================
+  
+  postgres:
+    image: postgres:16-alpine
+    container_name: aetherion-postgres
+    expose:
+      - "5432"
+    networks:
+      - internal
+    environment:
+      - POSTGRES_DB=aetherion
+      - POSTGRES_USER=aetherion
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+
+  neo4j:
+    image: neo4j:5.13
+    container_name: aetherion-neo4j
+    expose:
+      - "7687"
+      - "7474"
+    networks:
+      - internal
+    environment:
+      - NEO4J_AUTH=neo4j/${NEO4J_PASSWORD}
+      - NEO4J_PLUGINS=["apoc", "graph-data-science"]
+    volumes:
+      - neo4j_data:/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: aetherion-redis
+    expose:
+      - "6379"
+    networks:
+      - internal
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
+  redpanda:
+    image: vectorized/redpanda:latest
+    container_name: aetherion-redpanda
+    expose:
+      - "9092"
+      - "9644"
+    networks:
+      - internal
+    command:
+      - redpanda
+      - start
+      - --smp 1
+      - --memory 1G
+      - --reserve-memory 0M
+      - --overprovisioned
+      - --node-id 0
+      - --check=false
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data
+    restart: unless-stopped
+
+  # ==========================================================================
+  # MONITORING (Optional)
+  # ==========================================================================
+  
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: aetherion-prometheus
+    expose:
+      - "9090"
+    networks:
+      - internal
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+
+# ==========================================================================
+# ARCHITECTURE NOTES
+# ==========================================================================
+#
+# PUBLIC ACCESS:
+#   - ONLY port 8000 (UIE) is exposed
+#   - Perfect for CustomGPT/Claude integration
+#
+# INTERNAL NETWORK:
+#   - All engines on isolated network
+#   - internal: true prevents external routing
+#   - Function Broker orchestrates everything
+#
+# SECURITY MODEL:
+#   - UIE validates and sanitizes all inputs
+#   - UIE → Function Broker via mTLS
+#   - Function Broker → Engines via mTLS
+#   - OPA enforces constitutional governance
+#
+# DOMAIN CORTEX PROTECTION:
+#   - No public ports
+#   - Only accessible via Function Broker
+#   - UIE synthesizes results before returning to users
+#
+# ==========================================================================

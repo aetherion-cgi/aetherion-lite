@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aetherion-bue"
+version = "1.0.0"
+description = "Aetherion Business Underwriting Engine (BUE) - Commercial risk analytics core"
+authors = [
+    { name = "Aetherion Team" }
+]
+requires-python = ">=3.11"
+
+# Based on CORE_DEPS from setup.py
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.4.0",
+    "pandas>=2.1.0",
+    "numpy>=1.24.0",
+    "scipy>=1.11.0",
+    # For alignment with the rest of the platform; harmless even if not used yet
+    "aetherion-common>=1.0.0",
+]
+
+[project.optional-dependencies]
+gpu = [
+    "cupy-cuda12x>=12.0.0",
+    "numba>=0.58.0",
+]
+
+forecasting = [
+    "statsmodels>=0.14.0",
+    "prophet>=1.1.5",
+    "tensorflow>=2.15.0",
+]
+
+graphql = [
+    "strawberry-graphql>=0.216.0",
+]
+
+streaming = [
+    "kafka-python>=2.0.2",
+    "redis>=5.0.0",
+]
+
+all = [
+    "cupy-cuda12x>=12.0.0",
+    "numba>=0.58.0",
+    "statsmodels>=0.14.0",
+    "prophet>=1.1.5",
+    "tensorflow>=2.15.0",
+    "strawberry-graphql>=0.216.0",
+    "kafka-python>=2.0.2",
+    "redis>=5.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bue*"]

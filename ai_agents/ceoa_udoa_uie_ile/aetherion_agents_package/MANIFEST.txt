@@ -1,0 +1,36 @@
+# Aetherion AI Agents - Complete Package Manifest
+
+## Core Agent Files
+- aetherion_agents/base/constitutional_agent.py   (Base class for all agents)
+- aetherion_agents/ceoa/ceoa_agent.py            (Compute orchestration agent)
+- aetherion_agents/uie/uie_agent.py              (Intelligence synthesis agent)
+- aetherion_agents/udoa/udoa_agent.py            (Data orchestration agent)
+- aetherion_agents/ile/ile_agent.py              (Meta-learning agent)
+
+## Configuration
+- aetherion_agents/config/agents_config.yaml     (Agent configuration)
+- .env.example                                    (Environment variables template)
+
+## Documentation
+- README.md                                       (Main documentation)
+- aetherion_agents/docs/DEPLOYMENT.md            (Deployment guide)
+- aetherion_agents/docs/QUICKSTART.md            (Quick start guide)
+
+## Examples
+- aetherion_agents/examples/complete_integration.py (Full integration example)
+
+## Tests
+- aetherion_agents/tests/test_ceoa_agent.py      (CEOA tests)
+- aetherion_agents/tests/conftest.py             (Test configuration)
+
+## Setup Files
+- setup.py                                        (Package setup)
+- requirements.txt                                (Dependencies)
+- LICENSE                                         (License file)
+- .gitignore                                      (Git ignore rules)
+
+## Package Info
+Version: 1.0.0
+Author: Aetherion Architecture Team
+Date: November 22, 2025
+Contact: francoisjohnson94@icloud.com

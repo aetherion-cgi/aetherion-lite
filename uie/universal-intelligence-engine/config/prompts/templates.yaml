@@ -1,0 +1,218 @@
+# Prompt Templates Catalog
+# Templates for intent × domain × model combinations
+
+version: "1.0.0"
+last_updated: "2025-11-12T00:00:00Z"
+
+templates:
+  query_general_claude:
+    template_id: "query_general_claude"
+    name: "General Query - Claude"
+    description: "Template for general queries using Claude models"
+    intent_task: "query"
+    domains: []  # Applies to all domains
+    model_tags: ["claude"]
+    system_prompt: |
+      You are an AI assistant powered by Collective General Intelligence. Your responses should be:
+      - Accurate and well-cited
+      - Concise but comprehensive
+      - Grounded in the provided context
+      Always include citations for factual claims.
+    user_prompt_template: |
+      {{query}}
+      
+      Context:
+      {{context}}
+      
+      Available tools have been executed. Use the results to answer comprehensively.
+    variables:
+      - name: "query"
+        description: "The user's query"
+        required: true
+      - name: "context"
+        description: "Enriched context from tools"
+        required: true
+    version: "1.0.0"
+    priority: 100
+  
+  query_general_gpt:
+    template_id: "query_general_gpt"
+    name: "General Query - GPT"
+    description: "Template for general queries using GPT models"
+    intent_task: "query"
+    domains: []
+    model_tags: ["gpt"]
+    system_prompt: |
+      You are an AI assistant powered by Collective General Intelligence. Provide accurate, well-cited responses based on the available context and tool results.
+    user_prompt_template: |
+      Query: {{query}}
+      
+      Context: {{context}}
+      
+      Provide a comprehensive answer with citations.
+    variables:
+      - name: "query"
+        description: "The user's query"
+        required: true
+      - name: "context"
+        description: "Enriched context from tools"
+        required: true
+    version: "1.0.0"
+    priority: 100
+  
+  analysis_financial_claude:
+    template_id: "analysis_financial_claude"
+    name: "Financial Analysis - Claude"
+    description: "Template for financial analysis tasks using Claude"
+    intent_task: "analysis"
+    domains: ["finance", "investment", "banking"]
+    model_tags: ["claude"]
+    system_prompt: |
+      You are a financial analysis AI powered by CGI. Provide rigorous, data-driven analysis with clear reasoning.
+      
+      Always include:
+      - Key metrics and their interpretation
+      - Risk factors and uncertainties
+      - Data sources and citations
+      - Confidence levels for projections
+    user_prompt_template: |
+      <analysis_request>
+      {{query}}
+      </analysis_request>
+      
+      <financial_data>
+      {{context}}
+      </financial_data>
+      
+      <risk_assessment>
+      {{risk_data}}
+      </risk_assessment>
+      
+      Provide comprehensive financial analysis with quantified metrics.
+    tool_instructions: |
+      Use the analyze_risk tool to get probabilistic risk assessments.
+      Use the compute tool for financial simulations.
+    variables:
+      - name: "query"
+        description: "The analysis request"
+        required: true
+      - name: "context"
+        description: "Financial data context"
+        required: true
+      - name: "risk_data"
+        description: "Risk assessment results"
+        required: false
+        default: "No risk assessment available"
+    version: "1.0.0"
+    priority: 150
+  
+  action_planning_claude:
+    template_id: "action_planning_claude"
+    name: "Action Planning - Claude"
+    description: "Template for action planning tasks using Claude"
+    intent_task: "action"
+    domains: []
+    model_tags: ["claude"]
+    system_prompt: |
+      You are an action planning AI. Create detailed, executable plans with:
+      - Clear steps and dependencies
+      - Risk mitigation strategies
+      - Success criteria
+      - Timeline estimates
+    user_prompt_template: |
+      <objective>
+      {{query}}
+      </objective>
+      
+      <constraints>
+      {{constraints}}
+      </constraints>
+      
+      <available_resources>
+      {{context}}
+      </available_resources>
+      
+      Create a comprehensive action plan.
+    variables:
+      - name: "query"
+        description: "The objective to plan for"
+        required: true
+      - name: "constraints"
+        description: "Constraints and limitations"
+        required: false
+        default: "No specific constraints provided"
+      - name: "context"
+        description: "Available resources and context"
+        required: true
+    version: "1.0.0"
+    priority: 120
+  
+  synthesis_multimodal_gemini:
+    template_id: "synthesis_multimodal_gemini"
+    name: "Multimodal Synthesis - Gemini"
+    description: "Template for synthesizing multimodal data using Gemini"
+    intent_task: "synthesis"
+    domains: []
+    model_tags: ["gemini"]
+    system_prompt: |
+      You are a multimodal synthesis AI. Integrate information from text, images, and structured data into coherent insights.
+    user_prompt_template: |
+      Synthesis Request: {{query}}
+      
+      Text Data: {{text_context}}
+      
+      Image Analysis: {{image_context}}
+      
+      Structured Data: {{structured_context}}
+      
+      Synthesize these inputs into a unified response.
+    variables:
+      - name: "query"
+        description: "The synthesis request"
+        required: true
+      - name: "text_context"
+        description: "Text data"
+        required: false
+        default: ""
+      - name: "image_context"
+        description: "Image analysis results"
+        required: false
+        default: ""
+      - name: "structured_context"
+        description: "Structured data"
+        required: false
+        default: ""
+    version: "1.0.0"
+    priority: 130
+  
+  clarification_router:
+    template_id: "clarification_router"
+    name: "Clarification Router"
+    description: "Template for determining if clarification is needed"
+    intent_task: "internal_routing"
+    domains: []
+    model_tags: ["claude", "gpt"]
+    system_prompt: |
+      Determine if the user's query needs clarification before proceeding.
+      
+      Return JSON:
+      {
+        "needs_clarification": boolean,
+        "question": "question to ask user (if needed)",
+        "fields_needed": ["field1", "field2"]
+      }
+    user_prompt_template: |
+      Query: {{query}}
+      
+      Context: {{context}}
+      
+      Does this query need clarification? What information is missing?
+    variables:
+      - name: "query"
+        description: "The user's query"
+        required: true
+      - name: "context"
+        description: "Available context"
+        required: true
+    version: "1.0.0"
+    priority: 100

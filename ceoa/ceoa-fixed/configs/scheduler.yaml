@@ -1,0 +1,174 @@
+# Scheduler Configuration - Config-driven architecture
+# All weights, thresholds, and scoring logic as YAML, not Python code.
+# Changes to scheduling behavior = data change, not code deployment.
+
+scheduler:
+  # Placement strategy
+  strategy: greedy_with_regret  # greedy_with_regret | batch_optimize | hybrid
+  
+  # Batch optimization settings (only for flexible workloads)
+  batch_optimizer:
+    enabled: true
+    interval_seconds: 60  # Run OR-Tools every 60 seconds
+    max_queue_size: 100  # Only optimize if queue > 100
+    timeout_seconds: 5    # OR-Tools solver timeout
+  
+  # Feature weights for placement scoring
+  # These are learned over time but start with sensible defaults
+  weights:
+    cost: 0.35           # Cost optimization weight
+    carbon: 0.25         # Carbon intensity weight
+    latency: 0.15        # Expected execution latency
+    data_gravity: 0.15   # Data transfer cost/latency
+    reliability: 0.10    # Provider reliability score
+  
+  # Carbon-aware scheduling
+  carbon:
+    enabled: true
+    green_window_threshold_gco2_kwh: 100  # Below this is "green"
+    defer_threshold_hours: 4  # Max hours to defer for green window
+    weight_multiplier_in_green_window: 1.5  # Boost score in green windows
+  
+  # Cost optimization
+  cost:
+    spot_instance_preference: 0.8  # Prefer spot instances (0-1)
+    spot_reliability_threshold: 0.9  # Min reliability for spot usage
+    multi_cloud_arbitrage: true
+    cost_diff_threshold_percent: 10  # Switch providers if >10% cheaper
+  
+  # Data gravity optimization
+  data_gravity:
+    enabled: true
+    transfer_cost_per_gb:
+      inter_region: 0.09  # USD per GB
+      inter_provider: 0.12
+      same_region: 0.01
+    latency_penalty_per_100ms: 0.05  # Score penalty per 100ms
+  
+  # Provider reliability scores (learned from historical data)
+  # 0.0 = never use, 1.0 = always reliable
+  provider_reliability:
+    aws:
+      us-west-2: 0.98
+      us-east-1: 0.97
+      eu-west-1: 0.96
+    gcp:
+      us-west1: 0.97
+      us-central1: 0.98
+      europe-west1: 0.95
+    azure:
+      westus2: 0.95
+      eastus: 0.96
+      westeurope: 0.94
+    device_mesh:
+      default: 0.85  # Lower reliability but very low cost
+  
+  # Regional preferences (can override per workload)
+  regional_preferences:
+    default_regions:
+      - us-west-2
+      - us-east-1
+      - eu-west-1
+    
+    # Regulatory restrictions
+    restricted_regions:
+      - cn-north-1  # China
+      - cn-northwest-1
+      - us-gov-west-1  # US Gov (requires special auth)
+  
+  # Resource selection thresholds
+  resource_selection:
+    min_available_cpu_percent: 20  # Need at least 20% CPU available
+    min_available_memory_percent: 30
+    max_queue_length: 50  # Skip nodes with queue > 50
+    
+    # GPU selection
+    gpu_preference_order:
+      - nvidia_h100  # Fastest
+      - nvidia_a100
+      - nvidia_t4   # Most cost-effective
+      - amd_mi250
+  
+  # Regret mitigation (if placement fails, try alternatives)
+  regret:
+    enabled: true
+    max_retries: 3
+    backoff_multiplier: 1.5  # Exponential backoff
+    alternative_count: 3  # Keep top 3 alternatives
+  
+  # Performance optimization
+  caching:
+    placement_decisions_ttl_seconds: 300  # Cache similar placements
+    infrastructure_state_ttl_seconds: 60  # Cache node availability
+    carbon_intensity_ttl_seconds: 3600   # Cache carbon data
+  
+  # Learning and adaptation
+  learning:
+    enabled: true
+    feedback_loop_interval_hours: 24  # Retrain weights daily
+    min_samples_for_learning: 1000    # Need 1k samples before training
+    learning_rate: 0.01               # Gradient descent learning rate
+
+# Governance integration (references OPA policies)
+governance:
+  policy_bundle: "production_v1"
+  
+  # Sovereignty compliance
+  sovereignty:
+    enforce_data_residency: true
+    default_jurisdiction: "US"  # ISO 3166-1 alpha-2
+    
+    # Tier-based authorization thresholds
+    authorization_tiers:
+      routine:
+        max_harm_score: 0.2
+        min_benefit_score: 0.5
+      elevated:
+        max_harm_score: 0.4
+        min_benefit_score: 0.6
+      restricted:
+        max_harm_score: 0.6
+        min_benefit_score: 0.7
+        requires_human_approval: true
+      prohibited:
+        max_harm_score: 1.0  # Never allow
+
+# Device mesh configuration
+device_mesh:
+  enabled: true
+  
+  # Workload eligibility for device mesh
+  eligible_workload_types:
+    - batch_processing
+    - data_transformation
+    - ml_inference  # Not training
+  
+  # Device selection criteria
+  device_selection:
+    min_cpu_cores: 2
+    min_memory_gb: 4
+    min_uptime_percent: 80
+    
+    # Preference weights
+    prefer_wifi_over_cellular: 0.9
+    prefer_charging_devices: 0.8
+    prefer_idle_devices: 0.7
+  
+  # Payment rates (USD)
+  payment_rates:
+    per_cpu_hour: 0.01
+    per_gb_memory_hour: 0.005
+    per_workload_bonus: 0.001  # Completion bonus
+
+# Monitoring and alerting thresholds
+monitoring:
+  alerts:
+    high_cost_threshold_usd_per_hour: 100
+    high_carbon_threshold_kg_per_hour: 50
+    placement_failure_rate_threshold: 0.1  # Alert if >10% failures
+    average_queue_time_threshold_seconds: 300  # Alert if >5 min wait
+  
+  metrics:
+    collect_interval_seconds: 30
+    aggregation_window_seconds: 300
+    retention_days: 90

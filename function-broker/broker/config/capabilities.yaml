@@ -1,0 +1,220 @@
+- id: "uie.query"
+  display_name: "UIE Intelligence Query"
+  description: "Public broker-safe intelligence query façade backed by protected internal synthesis"
+  adapter: "DomainCortexAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7500/v1/synthesize"
+  default_governance_tier: "T2"
+  timeout_seconds: 30
+  domains:
+    - "general"
+    - "orchestration"
+  tags:
+    category: "intelligence"
+    priority: "standard"
+    internal_backing: "domain_cortex"
+    internal_only: "true"
+
+- id: "uie.plan"
+  display_name: "UIE Dynamic Planning"
+  description: "Public broker-safe planning façade backed by protected internal synthesis"
+  adapter: "DomainCortexAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7500/v1/synthesize"
+  default_governance_tier: "T2"
+  timeout_seconds: 45
+  domains:
+    - "orchestration"
+  tags:
+    category: "planning"
+    priority: "high"
+    internal_backing: "domain_cortex"
+    internal_only: "true"
+
+- id: "bue.underwrite"
+  display_name: "Business Underwriting"
+  description: "Run comprehensive underwriting analysis via Business Underwriting Engine"
+  adapter: "BUEAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:9000/api/v1/underwrite"
+  default_governance_tier: "T2"
+  timeout_seconds: 60
+  domains:
+    - "finance"
+    - "credit_risk"
+  tags:
+    category: "underwriting"
+    priority: "high"
+
+- id: "bue.scenario_analysis"
+  display_name: "BUE Scenario Analysis"
+  description: "Monte Carlo simulation for business scenarios"
+  adapter: "BUEAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:9000/api/v1/analyze"
+  default_governance_tier: "T2"
+  timeout_seconds: 90
+  domains:
+    - "finance"
+    - "strategy"
+  tags:
+    category: "analysis"
+    priority: "standard"
+
+- id: "udoa.query"
+  display_name: "Data Orchestration Query"
+  description: "Access governed enterprise data via Universal Data Orchestration API"
+  adapter: "UDOAAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7001/v1/query"
+  default_governance_tier: "T3"
+  timeout_seconds: 45
+  domains:
+    - "data"
+  tags:
+    category: "data_access"
+    priority: "high"
+    pii_sensitive: "true"
+
+- id: "udoa.aggregate"
+  display_name: "Data Aggregation"
+  description: "Aggregate data across multiple sources with governance"
+  adapter: "UDOAAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7001/v1/aggregate"
+  default_governance_tier: "T3"
+  timeout_seconds: 60
+  domains:
+    - "data"
+  tags:
+    category: "data_processing"
+    priority: "standard"
+
+- id: "ceoa.schedule"
+  display_name: "Compute Scheduling"
+  description: "Schedule workloads via Compute Energy Orchestration API"
+  adapter: "CEOAAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7100/ceoa/v1/workloads"
+  default_governance_tier: "T2"
+  timeout_seconds: 30
+  domains:
+    - "compute"
+    - "energy"
+  tags:
+    category: "infrastructure"
+    priority: "standard"
+
+- id: "ceoa.optimize"
+  display_name: "Resource Optimization"
+  description: "Optimize compute and energy resource allocation"
+  adapter: "CEOAAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7100/ceoa/v1/placement/optimize"
+  default_governance_tier: "T2"
+  timeout_seconds: 45
+  domains:
+    - "compute"
+    - "energy"
+  tags:
+    category: "optimization"
+    priority: "high"
+
+# CRITICAL: URPE is ONLY accessible via Function Broker
+- id: "urpe.evaluate"
+  display_name: "URPE Strategic Evaluation"
+  description: "Scenario/existential risk evaluation via Universal Risk & Probabilistic Engine"
+  adapter: "URPEAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7300/v1/evaluate"
+  default_governance_tier: "T3"
+  timeout_seconds: 120
+  domains:
+    - "strategy"
+    - "governance"
+    - "military"
+    - "existential"
+  tags:
+    category: "strategic"
+    priority: "critical"
+    restricted: "true"
+    constitutional_review: "required"
+
+- id: "urpe.scenario"
+  display_name: "URPE Scenario Planning"
+  description: "Strategic scenario planning and probabilistic modeling"
+  adapter: "URPEAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7300/v1/scenario"
+  default_governance_tier: "T3"
+  timeout_seconds: 180
+  domains:
+    - "strategy"
+    - "military"
+  tags:
+    category: "strategic"
+    priority: "critical"
+    restricted: "true"
+
+- id: "ile.learn"
+  display_name: "ILE Constitutional Learning"
+  description: "Continuous learning across constitutional domains"
+  adapter: "ILEAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7400/v1/learn"
+  default_governance_tier: "T2"
+  timeout_seconds: 60
+  domains:
+    - "governance"
+    - "learning"
+  tags:
+    category: "learning"
+    priority: "standard"
+
+- id: "ile.feedback"
+  display_name: "ILE Feedback Processing"
+  description: "Process feedback for constitutional alignment"
+  adapter: "ILEAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7400/v1/feedback"
+  default_governance_tier: "T2"
+  timeout_seconds: 30
+  domains:
+    - "governance"
+    - "learning"
+  tags:
+    category: "feedback"
+    priority: "high"
+
+- id: "cortex.synthesize"
+  display_name: "Domain Cortex Synthesis"
+  description: "Cross-domain intelligence synthesis via Domain Cortex"
+  adapter: "DomainCortexAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7500/v1/synthesize" #"http://domain-cortex:7500/v1/synthesize"#
+  default_governance_tier: "T2"
+  timeout_seconds: 90
+  domains:
+    - "general"
+    - "orchestration"
+    - "governance"
+  tags:
+    category: "synthesis"
+    priority: "high"
+    internal_only: "true"
+
+- id: "cortex.meta_learn"
+  display_name: "Domain Cortex Meta-Learning"
+  description: "Meta-learning and pattern recognition across domains"
+  adapter: "DomainCortexAdapter"
+  adapter_type: "http"
+  endpoint: "http://127.0.0.1:7500/v1/meta_learn" #"http://domain-cortex:7500/v1/meta_learn"#
+  default_governance_tier: "T2"
+  timeout_seconds: 120
+  domains:
+    - "learning"
+    - "governance"
+  tags:
+    category: "meta_learning"
+    priority: "standard"
+    internal_only: "true"

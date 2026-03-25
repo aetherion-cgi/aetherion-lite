@@ -1,0 +1,205 @@
+# SaaS Industry Manifest
+# Configuration for BUE Agent analyzing SaaS companies
+
+industry: "SaaS"
+category: "SW:SAAS"
+
+# Analysis strategy configuration
+analysis_strategy:
+  default: "comprehensive"
+  requires_external_data: true
+  requires_strategic_context: false
+  
+  # Child agents to spawn for SaaS analysis
+  child_agents_needed:
+    - market_sizing
+    - competitive_positioning
+    - financial_forecasting
+    - customer_analysis
+
+# Critical metrics for SaaS evaluation
+metrics:
+  critical:
+    - arr_growth_rate          # Annual Recurring Revenue growth
+    - net_revenue_retention     # NRR - expansion vs contraction
+    - magic_number              # (Net new ARR) / (Sales & Marketing spend)
+    - ltv_cac_ratio            # Customer Lifetime Value / Customer Acquisition Cost
+    - gross_margin             # Revenue - COGS
+    - burn_multiple            # Net burn / Net new ARR
+    - months_to_payback        # CAC payback period
+  
+  industry_specific:
+    - dau_mau_ratio            # Daily Active / Monthly Active Users
+    - expansion_revenue_pct    # % revenue from existing customers
+    - time_to_value            # Days to customer value realization
+    - activation_rate          # % of signups that activate
+    - viral_coefficient        # K-factor for organic growth
+
+# Risk factors specific to SaaS
+risk_factors:
+  high_priority:
+    - customer_concentration   # >20% revenue from single customer
+    - negative_nrr            # <100% net retention (churn exceeds expansion)
+    - high_burn               # <12 months runway
+    - unit_economics_broken   # LTV/CAC < 3
+    - low_gross_margin        # <70% gross margin
+  
+  medium_priority:
+    - market_saturation       # TAM already heavily penetrated
+    - competitive_pressure    # Many well-funded competitors
+    - regulatory_changes      # New compliance requirements
+    - scaling_challenges      # Infrastructure or team scaling issues
+  
+  low_priority:
+    - macro_economic          # General economic conditions
+    - technology_shifts       # Platform changes (cloud, mobile)
+
+# Market sizing configuration
+market_sizing:
+  tam_calculation: "top_down"    # vs "bottom_up"
+  growth_rate_model: "compound"  # vs "linear"
+  
+  penetration_assumptions:
+    sam_multiplier: 0.15         # SAM = TAM × 15%
+    som_multiplier: 0.20         # SOM = SAM × 20%
+    year_1: 0.001                # Year 1 = SOM × 0.1%
+    year_3: 0.01                 # Year 3 = SOM × 1%
+    year_5: 0.05                 # Year 5 = SOM × 5%
+
+# Competitive analysis configuration
+competitive_positioning:
+  key_factors:
+    - product_differentiation  # How unique is the product?
+    - go_to_market_efficiency  # CAC payback, magic number
+    - network_effects          # Does value increase with users?
+    - switching_costs          # How hard to leave?
+    - brand_strength           # Market awareness and perception
+  
+  moat_indicators:
+    high_nrr:
+      threshold: 120           # >120% NRR is exceptional
+      moat_contribution: 0.3
+    
+    negative_churn:
+      threshold: 0             # Expansion > contraction
+      moat_contribution: 0.25
+    
+    viral_coefficient:
+      threshold: 1.0           # >1.0 means exponential growth
+      moat_contribution: 0.2
+    
+    market_leadership:
+      threshold: 0.3           # >30% market share
+      moat_contribution: 0.25
+
+# Financial forecasting configuration
+financial_forecasting:
+  model_type: "cohort_based"   # Track customer cohorts
+  forecast_horizon: 36         # Months
+  
+  key_drivers:
+    - new_logo_acquisition     # New customer adds
+    - expansion_rate           # Upsell/cross-sell
+    - contraction_rate         # Downgrades
+    - churn_rate              # Cancellations
+    - pricing_power           # Ability to raise prices
+  
+  health_indicators:
+    strong_runway:
+      threshold: 18            # 18+ months
+    
+    adequate_runway:
+      threshold: 12            # 12-18 months
+    
+    concerning_runway:
+      threshold: 12            # <12 months
+
+# Customer analysis configuration
+customer_analysis:
+  concentration_thresholds:
+    low_risk: 10               # <10% from top customer
+    moderate_risk: 20          # 10-20% from top customer
+    high_risk: 20              # >20% from top customer
+  
+  diversification_factors:
+    - customer_count
+    - industry_mix
+    - geography_mix
+    - size_distribution       # SMB vs Enterprise mix
+
+# Regulatory considerations
+regulatory_considerations:
+  gdpr: required               # EU data protection
+  soc2: highly_recommended     # Enterprise requirement
+  hipaa: conditional           # Only if health data
+  ccpa: required               # California privacy
+  iso27001: recommended        # Information security
+
+# Constitutional governance thresholds
+governance:
+  authorization_tier: tier_1   # Automatic approval for most SaaS
+  benefit_threshold: 60        # Minimum benefit score
+  harm_threshold: 40           # Maximum harm score
+  
+  special_considerations:
+    - customer_data_privacy    # Always flag privacy concerns
+    - algorithmic_bias         # If AI-powered product
+    - monopoly_concerns        # If dominant market position
+    - labor_practices          # Gig economy implications
+    - environmental_impact     # Data center carbon footprint
+
+# Success benchmarks (for meta-learning)
+success_benchmarks:
+  excellent:
+    arr_growth: 100            # >100% YoY
+    nrr: 120                   # >120%
+    magic_number: 1.0          # >1.0
+    ltv_cac: 5                 # >5x
+  
+  good:
+    arr_growth: 50             # >50% YoY
+    nrr: 110                   # >110%
+    magic_number: 0.75         # >0.75
+    ltv_cac: 3                 # >3x
+  
+  acceptable:
+    arr_growth: 30             # >30% YoY
+    nrr: 100                   # 100%
+    magic_number: 0.5          # >0.5
+    ltv_cac: 3                 # 3x
+
+# Valuation multiples (for reference)
+valuation:
+  revenue_multiples:
+    top_tier: 15-25            # Exceptional companies
+    strong: 10-15              # Strong companies
+    average: 5-10              # Average companies
+    struggling: 2-5            # Below-average companies
+  
+  factors_increasing_multiple:
+    - high_growth              # >100% YoY
+    - strong_retention         # >110% NRR
+    - large_market            # >$10B TAM
+    - category_leadership     # Top 3 in space
+    - efficient_growth        # Rule of 40+
+
+# Notes for agent
+notes: |
+  SaaS companies are evaluated primarily on:
+  1. Growth efficiency (Magic Number, CAC Payback)
+  2. Retention economics (NRR, Churn)
+  3. Unit economics (LTV/CAC, Gross Margin)
+  4. Market opportunity (TAM/SAM/SOM)
+  5. Competitive moat (Switching costs, Network effects)
+  
+  The "Rule of 40" (Growth% + Margin% > 40) is a key heuristic.
+  
+  Enterprise SaaS typically has:
+  - Longer sales cycles (6-12 months)
+  - Higher ACVs ($50K-$1M+)
+  - Lower churn (<5% annually)
+  
+  SMB SaaS typically has:
+  - Shorter sales cycles (<3 months)
+  - Lower ACVs ($1K-$50K)
+  - Higher churn (15-30% annually)
