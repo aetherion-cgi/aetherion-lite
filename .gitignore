@@ -18,3 +18,4 @@ __pycache__/
 
 # Env files
 .env
+ai_agents/
