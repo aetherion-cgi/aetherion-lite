@@ -1,11 +1,3 @@
-Below is a clean .md doc you can drop into the repo as something like UIE_USAGE.md.
-
-# Aetherion Lite — UIE Usage Guide
-
-This document explains how to start Aetherion Lite, how to connect to the UIE, and what request structures to send from the terminal.
-
----
-
 ## What Aetherion Lite is
 
 Aetherion Lite is a local-first orchestration runtime built around:
